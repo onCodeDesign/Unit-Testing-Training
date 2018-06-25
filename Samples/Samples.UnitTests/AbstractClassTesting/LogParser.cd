@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Basic.UnitTests.AbstractClassTesting.LogParser">
+    <Position X="11.75" Y="1.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AwAAAAAAAIAAAAIAYAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractClassTesting\01_LogParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Basic.UnitTests.AbstractClassTesting.XmlLogParser">
+    <Position X="13.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractClassTesting\11_XmlLogParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Basic.UnitTests.AbstractClassTesting.CsvLogParser">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractClassTesting\21_CsvLogParser.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Basic.UnitTests.AbstractClassTesting2.LogParser">
+    <Position X="1" Y="2.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AoAAAAAAAIAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractClassTesting\31_ILogFormatReader.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="formatReader" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Basic.UnitTests.AbstractClassTesting2.XmlReader" BaseTypeListCollapsed="true">
+    <Position X="5.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractClassTesting\31_ILogFormatReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Basic.UnitTests.AbstractClassTesting2.CsvReader" BaseTypeListCollapsed="true">
+    <Position X="4" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractClassTesting\31_ILogFormatReader.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Basic.UnitTests.AbstractClassTesting2.ILogFormatReader">
+    <Position X="4.75" Y="2.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AbstractClassTesting\31_ILogFormatReader.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
