@@ -5,9 +5,15 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pos.Web", "Pos.Web\Pos.Web.csproj", "{252DE533-3B92-4A2D-BEE0-AC2BC30C71AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pos.Web.UnitTests", "Pos.Web.UnitTests\Pos.Web.UnitTests.csproj", "{75A894B1-8EE1-40DA-B18C-5ABFF6E62BE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pos.Web.UnitTests", "Pos.Web.UnitTests\Pos.Web.UnitTests.csproj", "{75A894B1-8EE1-40DA-B18C-5ABFF6E62BE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pos.DataAccess", "Pos.DataAccess\Pos.DataAccess.csproj", "{7336BD0D-8C38-4314-974B-F484D8A3A6D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pos.DataAccess", "Pos.DataAccess\Pos.DataAccess.csproj", "{7336BD0D-8C38-4314-974B-F484D8A3A6D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Exercises", ".Exercises", "{2B4F5571-5E91-4267-BA4C-EC0CD7B04537}"
+	ProjectSection(SolutionItems) = preProject
+		..\Demo-Exercises\POS-Demo.html = ..\Demo-Exercises\POS-Demo.html
+		..\Demo-Exercises\POS-Demo.md = ..\Demo-Exercises\POS-Demo.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

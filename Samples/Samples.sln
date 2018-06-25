@@ -5,7 +5,13 @@ VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples", "Samples\Samples.csproj", "{B39C20BE-4FB6-4F84-AD35-0A5EF3445450}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples.UnitTests", "Samples.UnitTests\Samples.UnitTests.csproj", "{FCC1A87A-F64C-4FF9-B0F3-48C3BCF9A5A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples.UnitTests", "Samples.UnitTests\Samples.UnitTests.csproj", "{FCC1A87A-F64C-4FF9-B0F3-48C3BCF9A5A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Exercises", ".Exercises", "{06F28CB2-7AA1-4D2F-A62A-86375C91D9FF}"
+	ProjectSection(SolutionItems) = preProject
+		Exercises.html = Exercises.html
+		Exercises.md = Exercises.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
