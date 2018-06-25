@@ -1,0 +1,164 @@
+ public IEnumerable<ITax> GetTaxes(Product product)
+        {
+            if (product.Taxes.HasFlag(TaxingType.RegionalTax))
+                yield return new RegionalTax();
+
+            if (product.Taxes.HasFlag(TaxingType.LuxuryTax))
+                yield return new LuxuryTax();
+
+			if (product.Taxes.HasFlag(TaxingType.Tva) && !product.Taxes.HasFlag(TaxingType.RegionalTax))
+                yield return new TvaTax();
+
+            if (product.Taxes.HasFlag(TaxingType.Discount))
+                yield return new Discount();
+        }
+
+************************************
+
+    [Flags]
+    public enum TaxingType
+    {
+        None = 0,
+        Tva = 1,
+        RegionalTax = 2,
+        LuxuryTax = 4,
+        Discount = 8
+    }
+
+***************************************
+
+        public decimal GetPrice(Product product)
+        {
+            decimal currentPrice = product.Price;
+
+            var taxes = taxProvider.GetTaxes(product);
+
+            bool regionalApplied = false;
+            if (product.Taxes.HasFlag(TaxingType.RegionalTax))
+            {
+                currentPrice = currentPrice + product.Price * 0.1m;
+                regionalApplied = true;
+            }
+
+            if (product.Taxes.HasFlag(TaxingType.Tva) && !regionalApplied)
+            {
+                currentPrice = currentPrice + product.Price * 0.22m;
+            }
+
+            if (product.Taxes.HasFlag(TaxingType.LuxuryTax))
+            {
+                currentPrice = currentPrice + product.Price * 0.5m;
+            }
+
+            if (product.Taxes.HasFlag(TaxingType.Discount))
+            {
+                currentPrice = currentPrice - currentPrice * 0.3m;
+            }
+
+            return currentPrice;
+        }
+
+**************************
+
+	  private static MainWindowViewModel GetTarget(FakeScanner scanner, IProductRepository productRepository)
+        {
+            return new MainWindowViewModel(scanner, productRepository);
+        }
+
+        private static IProductRepository GetProductRepository(Product p)
+        {
+            IProductRepository productRepository = Mock.Create<IProductRepository>();
+            Mock.Arrange(() => productRepository.GetProduct(Arg.AnyString)).Returns(p);
+            return productRepository;
+        }
+
+
+
+*********************
+
+        public void GetPrice_TwoTaxes_BothTaxesAreApplied()
+        {
+            Mock<ITax> tax = new Mock<ITax>();
+            tax.Setup(t => t.Apply(It.IsAny<decimal>())).Returns(1);
+
+            Mock<IProductTaxProvider> taxProvider = new Mock<IProductTaxProvider>();
+            taxProvider.Setup(t => t.GetTaxes(It.IsAny<Product>()))
+                .Returns(new[] { tax.Object, tax.Object });
+
+            PriceCalculator priceCalculator = new PriceCalculator(taxProvider.Object);
+
+
+            decimal actualRezult = priceCalculator.GetPrice(new Product { Price = 5m });
+
+
+            Assert.AreEqual(7, actualRezult);
+        }
+
+****************
+
+        [TestMethod]
+        public void ScanEvent_ProductExists_ShowProductName()
+        {
+            FakeScanner scanner = new FakeScanner();
+            MainWindowViewModel model = new MainWindowViewModel(scanner);
+
+            scanner.Scan("some barcode");
+
+            Assert.AreEqual("some product name", model.ProductName);
+        }
+
+        private class FakeScanner : IScanner
+        {
+            public event EventHandler<BarcodeScannedEventArgs> BarcodeScanned;
+
+            public void Scan(string someBarcode)
+            {
+                if (BarcodeScanned != null)
+                    BarcodeScanned(this, new BarcodeScannedEventArgs(someBarcode));
+            }
+        }
+
+******************
+
+public class PriceCalculatorTests
+    {
+        [TestMethod]
+        public void GetPrice_ProductWithVat_VatApplied()
+        {
+            Product p = new Product {Price = 100m, Taxes = TaxingType.Tva};
+            PriceCalculator priceCalculator = GetTarget();
+
+            decimal actualPrice = priceCalculator.GetPrice(p);
+            
+            Assert.AreEqual(122m, actualPrice);
+        }
+
+        [TestMethod]
+        public void GetPrice_ProductWithVatAndRegionalTaxes_OnlyRegionalApplied()
+        {
+            Product p = new Product { Price = 100m, Taxes = TaxingType.Tva | TaxingType.RegionalTax };
+            PriceCalculator priceCalculator = GetTarget();
+
+            decimal actualPrice = priceCalculator.GetPrice(p);
+
+            Assert.AreEqual(110m, actualPrice);
+        }
+
+        [TestMethod]
+        public void GetPrice_ProductWithVatAndRegionalAndLuxuryTaxes_RegionalAndLuxuryApplied()
+        {
+            Product p = new Product { Price = 100m, Taxes = TaxingType.Tva | TaxingType.RegionalTax | TaxingType.LuxuryTax};
+            PriceCalculator priceCalculator = GetTarget();
+
+            decimal actualPrice = priceCalculator.GetPrice(p);
+
+            Assert.AreEqual(160m, actualPrice);
+        }
+
+        private PriceCalculator GetTarget()
+        {
+            return new PriceCalculator();
+        }
+    }
+
+*****************************

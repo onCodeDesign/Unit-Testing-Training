@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Implement a POS (Point of Sale) system</title>
+</head>
+<body>
+
+    <h1 id="implement-a-pos-point-of-sale-system">Implement a POS (Point of Sale) system</h1>
+<p>Implement in an interactive way the following functionalities of a POS. When working on each point do NOT take into account the next functionalities that will come, but try to implement the current one as simple as possible. Later when new features are added refactor.</p>
+<p>Keep the Code-Test cycle as short as possible. Refactor each time everything is green.</p>
+<ol>
+<li><p>When a barcode is scanned the POS should display the product details</p>
+<ol type="a">
+<li>Test that when a product exists the product code is displayed</li>
+<li>Test that when a product exists the price has currency symbol</li>
+<li>Test that when the barcode has upper case or spaces the repository is called with lower case and trim</li>
+<li>Test when product is not found</li>
+</ol>
+</li>
+<li><p>Add VAT to product price and display it. Implement it as easy as possible. Test it as easy as possible. The VAT rate is <code>19%</code></p>
+</li>
+<li><p>There products which also have a regional tax. For these products the final price is calculated by first adding the regional tax and then the VAT. The RegionalTax is <code>10%</code></p>
+<p>Calculate the final price of a product by taking into account the regional tax as well.</p>
+<ol type="a">
+<li>Test that the correct price is displayed for products with only VAT</li>
+<li>Test that the correct price is displayed for products with VAT and Regional Tax</li>
+</ol>
+</li>
+<li><p>A product may have different types of taxes and there may also be products which do not have VAT nor other taxes. The taxes are: `
+The order in which taxes are applied is the following: <em>VAT</em>, <em>RegionalTax</em>, <em>LuxuryTax</em>. The <em>LuxuryTax</em> is the last one applied. The <em>LuxuryTax</em> is</p>
+<ol type="a">
+<li>Test that all taxes are applied for a product</li>
+<li>Test that the final price is correctly calculated for a product with
+more taxes</li>
+<li>Test that for a product which has no taxes its catalog price is displayed</li>
+</ol>
+</li>
+<li><p>There are products for which we offer a discount of 50%. The discount is applied at the end.</p>
+</li>
+<li><p>For some products and customers the discount may be more that the catalog price of the product. In this case the product should have the displayed proce <code>0</code> and not a negative value</p>
+</li>
+<li><p>The cashier may start a sale by pressing the <em>Start Sale</em> button. When a sale was created all the products that are scanned are part of that sale.
+At each point the cashier may ask for a <em>Sub Total</em> of the existing sale</p>
+</li>
+<li><p>The cashier may close a running sale. The total will be displayed.</p>
+</li>
+<li><p>Show a list with all the sales ordered by status (opened, or closed) and by date.</p>
+<ol type="a">
+<li>Test that all sales are shown</li>
+<li>Test that the order by is applied</li>
+</ol>
+</li>
+<li><p>Add a filter by status to the sales list</p>
+</li>
+</ol>
+<hr />
+<ol start="11">
+<li><p>Show a list with all the Products ordered by Name or Price.</p>
+<ol type="a">
+<li>Test that all the products are shown</li>
+</ol>
+<ol start="2">
+<li>Test the order is applied</li>
+</ol>
+</li>
+<li><p>Add a filter by Tax type to the products list</p>
+</li>
+</ol>
+
+
+</body>
+</html>
