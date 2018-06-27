@@ -1,13 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Pos.DataAccess.Model;
+using Pos.DataAccess.Repositories;
 using Pos.Web.Models;
 
 namespace Pos.Web.Controllers
 {
     public class ProductController : Controller
     {
+        private readonly IRepository rep;
         private readonly IProductRepository repository;
         private readonly IPriceCalculator priceCalculator;
+
+        public ProductController(IRepository rep)
+        {
+            this.rep = rep;
+        }
 
         public ProductController(IProductRepository repository, IPriceCalculator priceCalculator)
         {
@@ -34,6 +42,14 @@ namespace Pos.Web.Controllers
                 vm = new ProductViewModel {Name = "Not Available"};
 
             return View(vm);
+        }
+
+        public IActionResult List()
+        {
+            var list = rep.GetEntity<Product>()
+                .OrderBy(p=>p.CatalogName)
+                .ToList();
+            return View(list);
         }
     }
 }

@@ -1,8 +1,10 @@
 using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Pos.DataAccess.Model;
+using Pos.DataAccess.Repositories;
 using Pos.Web.Controllers;
 using Pos.Web.Models;
 
@@ -32,6 +34,29 @@ namespace Pos.Web.UnitTests
             ProductViewModel vm = result.GetViewModel<ProductViewModel>();
             Assert.AreEqual("Not Available", vm.Name);
         }
+
+        [TestMethod]
+        [Ignore]
+        public void List_MoreProducts_OrderedByName()
+        {
+            //TODO: complete this test as part of exercise 11
+
+            Mock<IRepository> repStub  = new Mock<IRepository>();
+            Product[] testProducts = new[]
+            {
+                new Product{CatalogName = "b"},
+                new Product{CatalogName = "A"}
+            };
+            repStub.Setup(r => r.GetEntity<Product>())
+                .Returns(testProducts.AsQueryable());
+
+            ProductController target = new ProductController(repStub.Object);
+
+            var result = target.List();
+
+            Assert.Fail("Not implemented");
+        }
+
 
         [TestMethod]
         public void Details_ProductExists_VatAppliedAndCurrencySymbolAdded()
