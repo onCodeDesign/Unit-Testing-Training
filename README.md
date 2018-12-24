@@ -1,7 +1,12 @@
 # Unit Testing Training
 [![on Code Design](http://res.cloudinary.com/oncodedesign/image/upload/c_scale,h_79/v1529679269/OnCodeDesign-logo3-header_large.png)](https://oncodedesign.com/)
 
-This repository contains the samples and exercises code that is used during the Good Unit Tests training.
+This repository contains the samples and exercises code that are used during the [Good Unit Tests training](https://oncodedesign.com/training-unit-testing/) by [Florin Coros](https://oncodedesign.com/about/).
+
+Training home page: [https://oncodedesign.com/training-unit-testing](https://oncodedesign.com/training-unit-testing/)
+
+
+[![Build Status](https://seido.visualstudio.com/onCodeDesign-Trainings/_apis/build/status/UnitTesting%20Training%20-%20CI?branchName=master)](https://seido.visualstudio.com/onCodeDesign-Trainings/_build/latest?definitionId=5?branchName=master)
 
 ## Good Unit Tests Training Overview
 
