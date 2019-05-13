@@ -8,7 +8,7 @@ namespace Samples.UnitTests.ContractTest
         public string GetVersionFromHeader(string input)
         {
             //TODO: implement this
-            return input;
+            return "1";
         }
 
         public bool HasCorrectHeader(string input)

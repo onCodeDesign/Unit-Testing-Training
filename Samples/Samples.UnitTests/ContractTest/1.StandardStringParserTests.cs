@@ -13,7 +13,7 @@ namespace Samples.UnitTests.ContractTest
         [TestMethod]
         public void GetStringVersionFromHeader_SingleDigit_Found()
         {
-            string input = "header;version=1;\n";
+            string input = @"header;version=1;\n";
             StandardStringParser parser = GetParser();
 
             string versionFromHeader = parser.GetVersionFromHeader(input);
@@ -24,7 +24,7 @@ namespace Samples.UnitTests.ContractTest
         [TestMethod]
         public void GetStringVersionFromHeader_WithMinorVersion_Found()
         {
-            string input = "header;version=1.1;\n";
+            string input = @"header;version=1.1;\n";
             StandardStringParser parser = GetParser();
 
             //rest of the test
@@ -33,7 +33,7 @@ namespace Samples.UnitTests.ContractTest
         [TestMethod]
         public void GetStringVersionFromHeader_WithRevision_Found()
         {
-            string input = "header;version=1.1.1;\n";
+            string input = @"header;version=1.1.1;\n";
             StandardStringParser parser = GetParser();
             //rest of the test
         }
@@ -42,7 +42,7 @@ namespace Samples.UnitTests.ContractTest
         [TestMethod]
         public void HasCorrectHeader_HeaderIsCorrect_ReturnsTrue()
         {
-            string input = "header;version=1.1.1;\n";
+            string input = @"header;version=1.1.1;\n";
             StandardStringParser parser = GetParser();
             bool result = parser.HasCorrectHeader(input);
             Assert.IsTrue(result);
@@ -51,7 +51,7 @@ namespace Samples.UnitTests.ContractTest
         [TestMethod]
         public void HasCorrectHeader_MissingVersionNode_ReturnsFalse()
         {
-            string input = "header; \n";
+            string input = @"header; \n";
             StandardStringParser parser = GetParser();
             //rest of the test
         }
