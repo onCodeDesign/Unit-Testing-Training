@@ -1,24 +1,26 @@
-﻿namespace Samples._11_StubVsMock
+﻿using Samples._11_StubVsMock2;
+
+namespace Samples._11_StubVsMock
 {
-    class PersonLogger
+    class EntityLogger
     {
         private readonly IFileWriterFactory fileWriterFactory;
 
-        public PersonLogger()
+        public EntityLogger()
         {
             fileWriterFactory = new FileWriterFactory();
         }
 
-        public PersonLogger(IFileWriterFactory fileWriterFactory)
+        public EntityLogger(IFileWriterFactory fileWriterFactory)
         {
             this.fileWriterFactory = fileWriterFactory;
         }
 
-        public void Log(Person p, string message)
+        public void Log<T>(T entity, string message) where T : IEntity
         {
             IFileWriter fileWriter = fileWriterFactory.GetNewWriter("LogFile");
             
-            fileWriter.WriteLine($"Person: {p.Name} | Message: {message}");
+            fileWriter.WriteLine($"Name: {entity.Name} | Message: {message}");
         }
     }
 }

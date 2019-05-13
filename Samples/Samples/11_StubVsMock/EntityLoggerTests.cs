@@ -3,19 +3,19 @@
 namespace Samples._11_StubVsMock
 {
 	[TestClass]
-	public class PersonLoggerTests
+	public class EntityLoggerTests
 	{
 		[TestMethod]
-		public void Log_PersonAndMessageAreGiven_LogLineFormated()
+		public void Log_NameAndMessageAreGiven_LogLineFormatted()
 		{
 			FileWriterDouble fileWriterMock = new FileWriterDouble();
 			FileWriterFactoryDouble fileWriterFactoryStub = new FileWriterFactoryDouble(fileWriterMock);
 
-			var target = new PersonLogger(fileWriterFactoryStub);
+			var target = new EntityLogger(fileWriterFactoryStub);
 
-			target.Log(new Person {Name = "Florin Coros"}, "CREATED");
+			target.Log(new Person {Name = "Florin Coroş" }, "CREATED");
 
-			const string expected = "Person: Florin Coros | Message: CREATED";
+			const string expected = "Name: Florin Coroş | Message: CREATED";
 			Assert.AreEqual(expected, fileWriterMock.Line);
 		}
 

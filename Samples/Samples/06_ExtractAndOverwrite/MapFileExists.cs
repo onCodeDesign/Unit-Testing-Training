@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Samples._06_ExtractAndOverwrite
 {
-    class MapFileEixsts
+    class MapFileExists
     {
         protected virtual bool FileExists(string mapFile)
         {
