@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Samples.UnitTests.AbstractClassTesting
 {
@@ -18,6 +20,10 @@ namespace Samples.UnitTests.AbstractClassTesting
 
         class TestableXmlParser : XmlLogParser
         {
+            public TestableXmlParser() : base(new Mock<ILogReader>().Object)
+            {
+            }
+
             public string TestGetVersion(string logTrace)
             {
                 return GetVersion(logTrace);

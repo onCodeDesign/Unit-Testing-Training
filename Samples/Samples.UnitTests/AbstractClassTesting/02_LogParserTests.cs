@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -10,7 +11,7 @@ namespace Samples.UnitTests.AbstractClassTesting
         [TestMethod]
         public void GetAllLogEntries_FileEmpty_NoEntriesAreReturned()
         {
-            LogParser target = new TestableLogParser();
+            LogParser target = new TestableLogParser(new string[0]);
 
             var entries = target.GetAllLogEntries();
 
@@ -21,7 +22,7 @@ namespace Samples.UnitTests.AbstractClassTesting
         [TestMethod]
         public void GetAllLogEntries_LogTraceHasSeverity_SeverityReturned()
         {
-            TestableLogParser parser = new TestableLogParser();
+            TestableLogParser parser = new TestableLogParser(new []{"log line"});
             parser.Severity = 15;
             // rest of the arrange
 
@@ -32,6 +33,11 @@ namespace Samples.UnitTests.AbstractClassTesting
 
         class TestableLogParser : LogParser
         {
+            public TestableLogParser(IEnumerable<string> traces) 
+                : base(new LogReaderStub(traces))
+            {
+            }
+
             public string Version { get; set; }
             public DateTime DateTime { get; set; }
             public int Severity { get; set; }
@@ -49,6 +55,21 @@ namespace Samples.UnitTests.AbstractClassTesting
             protected override int GetSeverity(string logTrace)
             {
                 return Severity;
+            }
+
+            class LogReaderStub : ILogReader
+            {
+                private readonly IEnumerable<string> traces;
+
+                public LogReaderStub(IEnumerable<string> traces)
+                {
+                    this.traces = traces;
+                }
+
+                public IEnumerable<string> GetTraces()
+                {
+                    return traces;
+                }
             }
         }
     }
