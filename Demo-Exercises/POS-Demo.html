@@ -17,19 +17,21 @@
 <li>Test when product is not found</li>
 </ol>
 </li>
-<li><p>Add VAT to product price and display it. Implement it as easy as possible. Test it as easy as possible. The VAT rate is <code>19%</code></p>
+<li><p>Add VAT to product price and display it. Implement it as easy as possible. Test it as easy as possible. The VAT rate is <code>19%</code>.</p>
+<ol type="a">
+<li>Not all products have VAT. Add functionality to support product with and without VAT.</li>
+</ol>
 </li>
-<li><p>There products which also have a regional tax. For these products the final price is calculated by first adding the regional tax and then the VAT. The RegionalTax is <code>10%</code></p>
+<li><p>There products which also have a Regional Tax. The Regional Tax is <code>10%</code>
+The products which have the Regional Tax are VAT exempt.</p>
 <p>Calculate the final price of a product by taking into account the regional tax as well.</p>
 <ol type="a">
 <li>Test that the correct price is displayed for products with only VAT</li>
 <li>Test that the correct price is displayed for products with VAT and Regional Tax</li>
 </ol>
 </li>
-<li><p>A product may have different types of taxes and there may also be products which do not have VAT nor other taxes. The taxes are: `
-The order in which taxes are applied is the following: <em>VAT</em>, <em>RegionalTax</em>, <em>LuxuryTax</em>. The <em>LuxuryTax</em> is the last one applied. The <em>LuxuryTax</em> is</p>
+<li><p>Some products are considered <em>Luxury Products</em>, and for these a Luxury Tax applies. This tax applies regardless of other taxes</p>
 <ol type="a">
-<li>Test that all taxes are applied for a product</li>
 <li>Test that the final price is correctly calculated for a product with
 more taxes</li>
 <li>Test that for a product which has no taxes its catalog price is displayed</li>
@@ -37,24 +39,37 @@ more taxes</li>
 </li>
 <li><p>There are products for which we offer a discount of 50%. The discount is applied at the end.</p>
 </li>
-<li><p>For some products and customers the discount may be more that the catalog price of the product. In this case the product should have the displayed proce <code>0</code> and not a negative value</p>
+<li><p>For some products and customers the discount may be more that the catalog price of the product. In this case the product should have the displayed price <code>0</code> and not a negative value</p>
 </li>
-<li><p>The cashier may start a sale by pressing the <em>Start Sale</em> button. When a sale was created all the products that are scanned are part of that sale.
-At each point the cashier may ask for a <em>Sub Total</em> of the existing sale</p>
+<li><p>The cashier may start a sale by pressing the <em>Start Sale</em> button. When a sale was created all the products that are scanned are part of that sale.</p>
 </li>
-<li><p>The cashier may close a running sale. The total will be displayed.</p>
+</ol>
+<ul>
+<li>each time a new product is scanned the <em>Sub Total</em> is also updated</li>
+</ul>
+<ol start="8">
+<li><p>The cashier may Close a running sale. The total will be displayed, when the sale is closed</p>
 </li>
-<li><p>Show a list with all the sales ordered by status (opened, or closed) and by date.</p>
+<li><p>The cashier may Cancel a running sale.</p>
+</li>
+<li><p>When closing a sale, the cashier may give a fixed amount as a discount to the buyer</p>
+</li>
+</ol>
+<ul>
+<li>the discount cannot be higher than 50% the the sale total</li>
+</ul>
+<ol start="11">
+<li><p>Show a list with all the sales ordered by status (Closed, or Canceled) and by date.</p>
 <ol type="a">
 <li>Test that all sales are shown</li>
 <li>Test that the order by is applied</li>
 </ol>
 </li>
-<li><p>Add a filter by status to the sales list</p>
+<li><p>The cashier may put a sale OnHold and resume it later. When she does this she enters a unique name to the Sale. To resume a sale she needs to find it by name</p>
 </li>
 </ol>
 <hr />
-<ol start="11">
+<ol start="13">
 <li><p>Show a list with all the Products ordered by Name or Price.</p>
 <ol type="a">
 <li>Test that all the products are shown</li>
