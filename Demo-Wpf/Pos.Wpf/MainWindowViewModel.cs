@@ -25,7 +25,8 @@ namespace Pos.Wpf
             if (product != null)
             {
                 ProductCode = product.CatalogCode;
-                ProductPrice = $"{product.Price:F2} $";
+                var price = product.Price*1.19m;
+                ProductPrice = $"{price:F2} $";
             }
         }
 

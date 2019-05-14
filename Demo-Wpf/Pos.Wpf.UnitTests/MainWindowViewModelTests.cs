@@ -46,7 +46,7 @@ namespace Pos.Wpf.UnitTests
 
             scanner.RaiseBarcodeScanned("some code");
 
-            Assert.AreEqual("13.30 $", vm.ProductPrice);
+            Assert.AreEqual("15.83 $", vm.ProductPrice);
         }
 
         private static Mock<IRepository> GetRepositoryDouble(Product someProduct = null)
