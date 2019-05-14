@@ -13,16 +13,41 @@ namespace Pos.Wpf.UnitTests
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
             Product someProduct = new Product {CatalogCode = "Some Code"};
-
-            Mock<IRepository> repository = new Mock<IRepository>();
-            repository.Setup(r => r.GetProduct(It.IsAny<string>())).Returns(someProduct);
+            Mock<IRepository> repository = GetRepositoryDouble(someProduct);
 
             ScannerDouble scanner = new ScannerDouble();
-            MainWindowViewModel vm = new MainWindowViewModel(scanner, repository.Object);
+            MainWindowViewModel vm = GetTarget(scanner, repository);
+
 
             scanner.RaiseBarcodeScanned("any code");
 
             Assert.AreEqual("Some Code", vm.ProductCode);
+        }
+
+        [TestMethod]
+        public void BarcodeScanned_Raised_ScannedBarcodeIsSendToRepository()
+        {
+            Mock<IRepository> repositoryMock = GetRepositoryDouble();
+            ScannerDouble scanner = new ScannerDouble();
+            GetTarget(scanner, repositoryMock);
+
+            scanner.RaiseBarcodeScanned("some barcode");
+
+            repositoryMock.Verify(r=>r.GetProduct("some barcode"));
+        }
+
+        private static Mock<IRepository> GetRepositoryDouble(Product someProduct = null)
+        {
+            someProduct = someProduct ?? new Product();
+
+            Mock<IRepository> repository = new Mock<IRepository>();
+            repository.Setup(r => r.GetProduct(It.IsAny<string>())).Returns(someProduct);
+            return repository;
+        }
+
+        private static MainWindowViewModel GetTarget(ScannerDouble scanner, Mock<IRepository> repositoryMock)
+        {
+            return new MainWindowViewModel(scanner, repositoryMock.Object);
         }
 
         sealed class ScannerDouble : IScanner
