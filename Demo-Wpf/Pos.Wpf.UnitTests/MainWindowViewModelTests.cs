@@ -4,11 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Pos.Wpf.UnitTests
 {
     [TestClass]
-    public class UnitTest1
+    public class MainWindowViewModelTests
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
+        
     }
 }
