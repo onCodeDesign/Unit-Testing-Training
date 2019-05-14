@@ -37,9 +37,9 @@ namespace Pos.Wpf.UnitTests
         }
 
         [TestMethod]
-        public void BarcodeScanned_ProductExists_PriceFormatted()
+        public void BarcodeScanned_ProductWithVat_VatAddedAndPriceFormatted()
         {
-            Product product = new Product {Price = 13.3m};
+            Product product = new Product {Price = 13.3m, HasVat = true};
             Mock<IRepository> productRep = GetRepositoryDouble(product);
             ScannerDouble scanner = new ScannerDouble();
             MainWindowViewModel vm = GetTarget(scanner, productRep);
