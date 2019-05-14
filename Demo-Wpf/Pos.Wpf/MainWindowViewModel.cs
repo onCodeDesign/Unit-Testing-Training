@@ -10,11 +10,13 @@ namespace Pos.Wpf
     {
         private readonly IScanner scanner;
         private readonly IRepository repository;
+        private readonly IPriceCalculator priceCalculator;
 
-        public MainWindowViewModel(IScanner scanner, IRepository repository)
+        public MainWindowViewModel(IScanner scanner, IRepository repository, IPriceCalculator priceCalculator)
         {
             this.scanner = scanner;
             this.repository = repository;
+            this.priceCalculator = priceCalculator;
             this.scanner.BarcodeScanned += ScannerBarcodeScanned;
         }
 
@@ -25,17 +27,12 @@ namespace Pos.Wpf
             if (product != null)
             {
                 ProductCode = product.CatalogCode;
-
-                var price = product.Price;
-                if (product.HasVat)
-                    price = price * 1.19m;
-
+                var price = priceCalculator.GetPrice(product);
                 ProductPrice = $"{price:F2} $";
             }
         }
 
         private string productCode;
-
         public string ProductCode
         {
             get { return productCode; }
@@ -47,7 +44,6 @@ namespace Pos.Wpf
         }
 
         private string productName;
-
         public string ProductName
         {
             get { return productName; }
