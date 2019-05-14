@@ -33,7 +33,20 @@ namespace Pos.Wpf.UnitTests
 
             scanner.RaiseBarcodeScanned("some barcode");
 
-            repositoryMock.Verify(r=>r.GetProduct("some barcode"));
+            repositoryMock.Verify(r => r.GetProduct("some barcode"));
+        }
+
+        [TestMethod]
+        public void BarcodeScanned_ProductExists_PriceFormatted()
+        {
+            Product product = new Product {Price = 13.3m};
+            Mock<IRepository> productRep = GetRepositoryDouble(product);
+            ScannerDouble scanner = new ScannerDouble();
+            MainWindowViewModel vm = GetTarget(scanner, productRep);
+
+            scanner.RaiseBarcodeScanned("some code");
+
+            Assert.AreEqual("13.30 $", vm.ProductPrice);
         }
 
         private static Mock<IRepository> GetRepositoryDouble(Product someProduct = null)
