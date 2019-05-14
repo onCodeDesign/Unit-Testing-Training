@@ -64,6 +64,7 @@
     </ApplicationDefinition>
     <Compile Include="DAL\MyDbContext.cs" />
     <Compile Include="DAL\IRepository.cs" />
+    <Compile Include="Sale.cs" />
     <Compile Include="Services\IPriceCalculator.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Services\BarcodeScannedEventArgs.cs" />

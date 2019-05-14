@@ -12,6 +12,8 @@ namespace Pos.Wpf
         private readonly IRepository repository;
         private readonly IPriceCalculator priceCalculator;
 
+        private Sale currentSale;
+
         public MainWindowViewModel(IScanner scanner, IRepository repository, IPriceCalculator priceCalculator)
         {
             this.scanner = scanner;
@@ -29,10 +31,24 @@ namespace Pos.Wpf
                 ProductCode = product.CatalogCode;
                 var price = priceCalculator.GetPrice(product);
                 ProductPrice = $"{price:F2} $";
+
+                if (currentSale != null)
+                    currentSale.Add(product, price);
             }
         }
 
+        public void StartSale()
+        {
+            currentSale = new Sale();
+        }
+
+        public bool CanStartSale()
+        {
+            return currentSale != null;
+        }
+
         private string productCode;
+
         public string ProductCode
         {
             get { return productCode; }
@@ -44,6 +60,7 @@ namespace Pos.Wpf
         }
 
         private string productName;
+
         public string ProductName
         {
             get { return productName; }
