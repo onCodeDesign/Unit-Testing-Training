@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.202
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pos.Wpf", "Pos.Wpf\Pos.Wpf.csproj", "{E47DC7CA-AD6B-40CE-A1EC-CE39DA6B57C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pos.Wpf.UnitTests", "Pos.Wpf.UnitTests\Pos.Wpf.UnitTests.csproj", "{A9988348-C429-43E4-B849-FFD422A07292}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Exercises", ".Exercises", "{6C6FD4D4-5A46-468E-AAF5-1744E3BAE13D}"
+	ProjectSection(SolutionItems) = preProject
+		..\Demo-Exercises\POS-Demo.md = ..\Demo-Exercises\POS-Demo.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E47DC7CA-AD6B-40CE-A1EC-CE39DA6B57C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E47DC7CA-AD6B-40CE-A1EC-CE39DA6B57C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E47DC7CA-AD6B-40CE-A1EC-CE39DA6B57C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E47DC7CA-AD6B-40CE-A1EC-CE39DA6B57C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9988348-C429-43E4-B849-FFD422A07292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9988348-C429-43E4-B849-FFD422A07292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9988348-C429-43E4-B849-FFD422A07292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9988348-C429-43E4-B849-FFD422A07292}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE2FFF7F-B785-4950-BF20-95A82B458E9C}
+	EndGlobalSection
+EndGlobal

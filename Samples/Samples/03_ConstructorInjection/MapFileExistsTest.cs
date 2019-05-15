@@ -18,6 +18,19 @@ namespace Samples._03_ConstructorInjection
             Assert.AreEqual("Kml file for Map SomeMapCode exists", actual);
         }
 
+        [TestMethod]
+        public void ShowMapExistence_MapNotExists_NotFoundMessageReturned()
+        {
+            FileSystemGatewayStub fileSystemStub = new FileSystemGatewayStub{Exist = false};
+            MapFileExists target = new MapFileExists(fileSystemStub);
+
+            string mapCode = "SomeMapCode";
+
+            string actual = target.ShowMapExistence(mapCode);
+
+            Assert.AreEqual("NOT found for Map SomeMapCode", actual);
+        }
+
         class FileSystemGatewayStub : IFileSystemGateway
         {
             public bool FileExists(string mapFile)

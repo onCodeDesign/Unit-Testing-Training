@@ -5,21 +5,25 @@ namespace Samples.UnitTests.AbstractClassTesting
 {
 	internal class CsvLogParser : LogParser
 	{
-		protected override string GetVersion(string logTrace)
+        public CsvLogParser(ILogReader logReader) : base(logReader)
+        {
+        }
+
+        protected override string GetVersion(string logTrace)
 		{
 			throw new NotImplementedException();
 		}
 
-		protected override DateTime GetTime(string logTrace)
+        protected override DateTime GetTime(string logTrace)
 		{
 			throw new NotImplementedException();
 		}
 
-		protected override int GetSeverity(string logTrace)
+        protected override int GetSeverity(string logTrace)
 		{
 			throw new NotImplementedException();
 		}
-	}
+    }
 
 	[TestClass]
 	public class CsvLogParserTests
@@ -32,10 +36,14 @@ namespace Samples.UnitTests.AbstractClassTesting
 
 		class TestableCsvLogParser : CsvLogParser
 		{
-			public string TestGetVersion(string logTrace)
+            public TestableCsvLogParser(ILogReader logReader) : base(logReader)
+            {
+            }
+
+            public string TestGetVersion(string logTrace)
 			{
 				return base.GetVersion(logTrace);
 			}
-		}
+        }
 	}
 }

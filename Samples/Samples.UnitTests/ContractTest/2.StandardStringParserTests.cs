@@ -12,13 +12,13 @@ namespace Samples.UnitTests.ContractTest
 
         protected override string GetInputWithCorrectHeaderAndVersion(string versionNumber)
         {
-            return string.Format("header;version={0};\n", versionNumber);
+            return $@"header;version={versionNumber};\n";
         }
 
         [TestMethod]
         public override void HasCorrectHeader_MissingVersionNode_ReturnsFalse()
         {
-            string input = "header; \n";
+            string input = @"header; \n";
             IStringParser parser = GetParser();
             //rest of the test
         }
@@ -27,7 +27,7 @@ namespace Samples.UnitTests.ContractTest
         [TestMethod]
         public void HasCorrectHeader_WithSpacesAroundSeparators_ReturnsTrue()
         {
-            string input = "header ; version=1.1.1 ; \n";
+            string input = @"header ; version=1.1.1 ; \n";
             IStringParser parser = GetParser();
             //rest of the test
         }

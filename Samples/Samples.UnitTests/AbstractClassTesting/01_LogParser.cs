@@ -6,7 +6,12 @@ namespace Samples.UnitTests.AbstractClassTesting
 {
     abstract class LogParser
     {
-        private IEnumerable<string> logTraces; // this is somehow given 
+        private readonly IEnumerable<string> logTraces;
+
+        protected LogParser(ILogReader logReader)
+        {
+            logTraces = logReader.GetTraces();
+        }
 
         protected abstract string GetVersion(string logTrace);
         protected abstract DateTime GetTime(string logTrace);

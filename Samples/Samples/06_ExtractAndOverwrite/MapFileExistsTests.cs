@@ -3,19 +3,19 @@
 namespace Samples._06_ExtractAndOverwrite
 {
     [TestClass]
-    public class MapFileEixstsTests
+    public class MapFileExistsTests
     {
         [TestMethod]
         public void ShowMapExistence_MapExists_ExistsMessageReturned()
         {
-            MapFileEixsts target = new TestableMapFileExists {Exists = true};
+            MapFileExists target = new TestableMapFileExists {Exists = true};
 
             string actual = target.ShowMapExistence("SomeMapCode");
 
             Assert.AreEqual("Kml file for Map SomeMapCode exists", actual);
         }
 
-        private class TestableMapFileExists : MapFileEixsts
+        private class TestableMapFileExists : MapFileExists
         {
             protected override bool FileExists(string mapFile)
             {

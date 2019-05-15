@@ -6,6 +6,7 @@ namespace Samples.UnitTests.ContractTest
     public abstract class BaseStringParserTests
     {
         protected abstract IStringParser GetParser();
+
         protected abstract string GetInputWithCorrectHeaderAndVersion(string versionNumber);
 
         [TestMethod]
@@ -27,6 +28,7 @@ namespace Samples.UnitTests.ContractTest
             string input = GetInputWithCorrectHeaderAndVersion(version);
             IStringParser parser = GetParser();
             //...
+
         }
 
         [TestMethod]

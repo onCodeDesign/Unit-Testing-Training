@@ -20,7 +20,7 @@ namespace Samples._12_StubVsMock
 
             target.Log(new Person(), "Some message");
 
-            const string expected = "Person: Florin Coros | Message: CREATED";
+            const string expected = "Person: Florin Coroş | Message: CREATED";
             emailServiceMock.Verify(e => e.SendMessage(It.IsAny<string>()));
         }
 
