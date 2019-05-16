@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using Pos.Wpf.DAL;
 using Pos.Wpf.Services;
 
 namespace Pos.Wpf
@@ -16,7 +18,14 @@ namespace Pos.Wpf
 
         private void ScannerBarcodeScanned(object sender, BarcodeScannedEventArgs e)
         {
-            
+            using (var db = new MyDbContext())
+            {
+                Product product = db.Products.FirstOrDefault(p => p.Barcode == e.Barcode);
+                if (product != null)
+                {
+                    ProductCode = product.CatalogCode;
+                }
+            }
         }
 
         private string productCode;
