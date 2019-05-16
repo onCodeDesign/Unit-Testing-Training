@@ -20,8 +20,24 @@ namespace Samples._12_StubVsMock
 
             target.Log(new Person(), "Some message");
 
-            const string expected = "Person: Florin Coroş | Message: CREATED";
             emailServiceMock.Verify(e => e.SendMessage(It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        public void Log_IOException_EmailFormatted()
+        {
+            Mock<IFileWriter> fileWriterStub = new Mock<IFileWriter>();
+            fileWriterStub.Setup(f => f.WriteLine(It.IsAny<string>()))
+                .Throws(new IOException());
+
+            Mock<IEmailService> emailServiceMock = new Mock<IEmailService>();
+
+            PersonLogger target = new PersonLogger(fileWriterStub.Object, emailServiceMock.Object);
+
+            target.Log(new Person(), "Some message");
+
+            const string expected = "Person: Florin Coroş | Message: CREATED";
+            emailServiceMock.Verify(e => e.SendMessage(expected));
         }
 
         [TestMethod]

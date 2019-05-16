@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Samples._12_StubVsMock
 {
-	public class PersonLogger
+    public class PersonLogger
 	{
 		private readonly IFileWriter fileWriter;
 		private readonly IEmailService emailService;
