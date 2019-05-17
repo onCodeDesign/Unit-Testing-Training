@@ -63,7 +63,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="DAL\MyDbContext.cs" />
+    <Compile Include="IPriceCalculator.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="ITaxProvider.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Services\BarcodeScannedEventArgs.cs" />
     <Compile Include="Services\IScanner.cs" />

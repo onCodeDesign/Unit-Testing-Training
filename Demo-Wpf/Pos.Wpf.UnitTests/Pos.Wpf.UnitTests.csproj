@@ -63,7 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModelTests.cs" />
+    <Compile Include="PriceCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaxProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
