@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Pos.Wpf.DAL;
+using Pos.Wpf.Services;
 using Pos.Wpf.Services;
 
 namespace Pos.Wpf.UnitTests
@@ -10,30 +14,43 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
-            //arrange
             FakeScanner scanner = new FakeScanner();
-            MainWindowViewModel vm = new MainWindowViewModel(scanner);
-            
-            //act
-            scanner.Scan("some code");
-            
-            // assert
-            Assert.AreEqual("some code", vm.ProductCode);
-        }
-    }
+            FakeRepository repStub = new FakeRepository(new[] {new Product {Barcode = "some barcode", CatalogCode = "SomeProductCode"}});
+            MainWindowViewModel vm = new MainWindowViewModel(scanner, repStub);
 
-    public class FakeScanner : IScanner
-    {
-        public event EventHandler<BarcodeScannedEventArgs> BarcodeScanned;
+            scanner.Scan("some barcode");
 
-        protected virtual void OnBarcodeScanned(BarcodeScannedEventArgs e)
-        {
-            BarcodeScanned?.Invoke(this, e);
+            Assert.AreEqual("SomeProductCode", vm.ProductCode);
         }
 
-        public void Scan(string someCode)
+        class FakeScanner : IScanner
         {
-            OnBarcodeScanned(new BarcodeScannedEventArgs(someCode));
+            public event EventHandler<BarcodeScannedEventArgs> BarcodeScanned;
+
+            public void Scan(string someBarcode)
+            {
+                OnBarcodeScanned(new BarcodeScannedEventArgs(someBarcode));
+            }
+
+            protected virtual void OnBarcodeScanned(BarcodeScannedEventArgs e)
+            {
+                BarcodeScanned?.Invoke(this, e);
+            }
+        }
+
+        class FakeRepository : IRepository
+        {
+            private readonly IEnumerable<Product> products;
+
+            public FakeRepository(IEnumerable<Product> products)
+            {
+                this.products = products;
+            }
+
+            public IQueryable<T> GetEntities<T>() where T : class
+            {
+                return products.Cast<T>().AsQueryable();
+            }
         }
     }
 }
