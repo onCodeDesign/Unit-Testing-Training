@@ -12,12 +12,19 @@ namespace Pos.Wpf.UnitTests
     [TestClass]
     public class MainWindowViewModelTests
     {
+        private FakeScanner scannerSub;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            scannerSub = new FakeScanner();
+        }
+
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
-            FakeScanner scannerSub = new FakeScanner();
             FakeRepository repStub = new FakeRepository(new[] {new Product {Barcode = "some barcode", CatalogCode = "SomeProductCode"}});
-            MainWindowViewModel vm = new MainWindowViewModel(scannerSub, repStub);
+            MainWindowViewModel vm = GetTarget(repStub);
 
             scannerSub.Scan("some barcode");
 
@@ -27,16 +34,20 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExists_PriceFormatted()
         {
-            FakeScanner scannerStub = new FakeScanner();
             var testData = new[] {new Product {Barcode = "some barcode", Price = 14.131m}};
             Mock<IRepository> repositoryStub = new Mock<IRepository>();
             repositoryStub.Setup(r => r.GetEntities<Product>()).Returns(testData.AsQueryable);
 
-            MainWindowViewModel vm = new MainWindowViewModel(scannerStub, repositoryStub.Object);
+            MainWindowViewModel vm = GetTarget(repositoryStub.Object);
 
-            scannerStub.Scan("some barcode");
+            scannerSub.Scan("some barcode");
 
             Assert.AreEqual("14.13 $", vm.ProductPrice);
+        }
+
+        private MainWindowViewModel GetTarget(IRepository repositoryStub)
+        {
+            return new MainWindowViewModel(scannerSub, repositoryStub);
         }
 
         sealed class FakeScanner : IScanner
