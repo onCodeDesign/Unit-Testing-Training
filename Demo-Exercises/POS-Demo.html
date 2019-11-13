@@ -22,12 +22,24 @@
 <li>Not all products have VAT. Add functionality to support product with and without VAT.</li>
 </ol>
 </li>
-<li><p>There products which also have a Regional Tax. The Regional Tax is <code>10%</code>
-The products which have the Regional Tax are VAT exempt.</p>
+</ol>
+<p>A product may have 0 or more taxes.
+For simplicity we may represent taxes with a flag enum:</p>
+<pre><code>[Flags]
+public enum TaxingType
+{
+    None = 0,
+    Vat = 1,
+    RegionalTax = 2,    
+}
+</code></pre>
+<ol start="3">
+<li><p>There are products which have a Regional Tax. The <em>Regional Tax</em> is <code>10%</code>.
+The products which have the <em>Regional Tax</em> are VAT exempt, even if they would have VAT</p>
 <p>Calculate the final price of a product by taking into account the regional tax as well.</p>
 <ol type="a">
 <li>Test that the correct price is displayed for products with only VAT</li>
-<li>Test that the correct price is displayed for products with VAT and Regional Tax</li>
+<li>Test that the correct price is displayed for products which have VAT and Regional Tax</li>
 </ol>
 </li>
 <li><p>Some products are considered <em>Luxury Products</em>, and for these a Luxury Tax applies. This tax applies regardless of other taxes</p>
@@ -37,9 +49,7 @@ more taxes</li>
 <li>Test that for a product which has no taxes its catalog price is displayed</li>
 </ol>
 </li>
-<li><p>There are products for which we offer a discount of 50%. The discount is applied at the end.</p>
-</li>
-<li><p>For some products and customers the discount may be more that the catalog price of the product. In this case the product should have the displayed price <code>0</code> and not a negative value</p>
+<li><p>There are products for which we offer a discount of 50%. The discount is applied at the end from the total price.</p>
 </li>
 <li><p>The cashier may start a sale by pressing the <em>Start Sale</em> button. When a sale was created all the products that are scanned are part of that sale.</p>
 </li>
@@ -47,7 +57,7 @@ more taxes</li>
 <ul>
 <li>each time a new product is scanned the <em>Sub Total</em> is also updated</li>
 </ul>
-<ol start="8">
+<ol start="7">
 <li><p>The cashier may Close a running sale. The total will be displayed, when the sale is closed</p>
 </li>
 <li><p>The cashier may Cancel a running sale.</p>
@@ -58,7 +68,7 @@ more taxes</li>
 <ul>
 <li>the discount cannot be higher than 50% the the sale total</li>
 </ul>
-<ol start="11">
+<ol start="10">
 <li><p>Show a list with all the sales ordered by status (Closed, or Canceled) and by date.</p>
 <ol type="a">
 <li>Test that all sales are shown</li>
@@ -69,7 +79,7 @@ more taxes</li>
 </li>
 </ol>
 <hr />
-<ol start="13">
+<ol start="12">
 <li><p>Show a list with all the Products ordered by Name or Price.</p>
 <ol type="a">
 <li>Test that all the products are shown</li>
