@@ -64,9 +64,11 @@
     </ApplicationDefinition>
     <Compile Include="DAL\MyDbContext.cs" />
     <Compile Include="DAL\IRepository.cs" />
+    <Compile Include="Services\IPriceCalculator.cs" />
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Services\BarcodeScannedEventArgs.cs" />
     <Compile Include="Services\IScanner.cs" />
+    <Compile Include="Services\PriceCalculator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
