@@ -3,7 +3,7 @@
 namespace Samples._04_PropertyInjection
 {
     [TestClass]
-    public class MapFileEixstsTest
+    public class MapFileExistsTest
     {
         [TestMethod]
         public void ShowMapExistence_MapExists_ExistsMessageReturned()

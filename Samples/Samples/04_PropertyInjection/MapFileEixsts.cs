@@ -4,7 +4,7 @@ namespace Samples._04_PropertyInjection
 {
     internal class MapFileEixsts
     {
-        private IFileSystemGateway fileSystem = null;//= new FileSystemGateway();
+        private IFileSystemGateway fileSystem = null;//= new FileSystemGateway(); <-- for existent code
 
         public IFileSystemGateway FileSystem
         {

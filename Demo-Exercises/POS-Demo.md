@@ -14,13 +14,25 @@ Keep the Code-Test cycle as short as possible. Refactor each time everything is 
    a. Not all products have VAT. Add functionality to support product with and without VAT.
 
 
-3. There products which also have a Regional Tax. The Regional Tax is `10%`
-The products which have the Regional Tax are VAT exempt.
+A product may have 0 or more taxes.
+For simplicity we may represent taxes with a flag enum:
+```
+[Flags]
+public enum TaxingType
+{
+    None = 0,
+    Vat = 1,
+    RegionalTax = 2,    
+}
+```
+
+3. There are products which have a Regional Tax. The *Regional Tax* is `10%`. 
+The products which have the *Regional Tax* are VAT exempt, even if they would have VAT
 
     Calculate the final price of a product by taking into account the regional tax as well.
 
     a. Test that the correct price is displayed for products with only VAT
-    a. Test that the correct price is displayed for products with VAT and Regional Tax
+    a. Test that the correct price is displayed for products which have VAT and Regional Tax
 
 
 4. Some products are considered *Luxury Products*, and for these a Luxury Tax applies. This tax applies regardless of other taxes
@@ -29,32 +41,29 @@ The products which have the Regional Tax are VAT exempt.
     more taxes
     a. Test that for a product which has no taxes its catalog price is displayed
 
-5. There are products for which we offer a discount of 50%. The discount is applied at the end. 
+5. There are products for which we offer a discount of 50%. The discount is applied at the end from the total price.
 
-6. For some products and customers the discount may be more that the catalog price of the product. In this case the product should have the displayed price `0` and not a negative value
-
-
-7. The cashier may start a sale by pressing the *Start Sale* button. When a sale was created all the products that are scanned are part of that sale. 
+6. The cashier may start a sale by pressing the *Start Sale* button. When a sale was created all the products that are scanned are part of that sale. 
  - each time a new product is scanned the *Sub Total* is also updated
 
-8. The cashier may Close a running sale. The total will be displayed, when the sale is closed
+7. The cashier may Close a running sale. The total will be displayed, when the sale is closed
 
-9. The cashier may Cancel a running sale.
+8. The cashier may Cancel a running sale.
 
-10. When closing a sale, the cashier may give a fixed amount as a discount to the buyer
+9. When closing a sale, the cashier may give a fixed amount as a discount to the buyer
   - the discount cannot be higher than 50% the the sale total
 
-11. Show a list with all the sales ordered by status (Closed, or Canceled) and by date.
+10. Show a list with all the sales ordered by status (Closed, or Canceled) and by date.
     a. Test that all sales are shown
     a. Test that the order by is applied
 
-12. The cashier may put a sale OnHold and resume it later. When she does this she enters a unique name to the Sale. To resume a sale she needs to find it by name
+11. The cashier may put a sale OnHold and resume it later. When she does this she enters a unique name to the Sale. To resume a sale she needs to find it by name
 
 --------------
 
-13. Show a list with all the Products ordered by Name or Price.
+12. Show a list with all the Products ordered by Name or Price.
     a. Test that all the products are shown
     2. Test the order is applied
     
-14. Add a filter by Tax type to the products list
+13. Add a filter by Tax type to the products list
     

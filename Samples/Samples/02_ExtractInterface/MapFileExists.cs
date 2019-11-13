@@ -8,7 +8,7 @@ namespace Samples._02_ExtractInterface
         {
             string mapFile = mapCode + ".kml";
 
-            IFileSystemGateway fileSystemGateway = new FileSystemGateway();
+            IFileSystemGateway fileSystemGateway = new FileSystemGateway(); // instance creation still keeps a dependency to the external dependency
             if (fileSystemGateway.FileExists(mapFile))
                 return $"Kml file for Map {mapCode} exists";
             else

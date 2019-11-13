@@ -62,26 +62,6 @@ namespace Samples.UnitTests.Overspecifying2
         {
             Mock<ILogProvider> logProviderMock = new Mock<ILogProvider>();
             logProviderMock.Setup(l => l.GetLineCount()).Returns(3);
-            logProviderMock.Setup(l => l.GetText("any file name", 1, 1)).Returns("A");
-            logProviderMock.Setup(l => l.GetText("any file name", 2, 2)).Returns("B");
-            logProviderMock.Setup(l => l.GetText("any file name", 3, 3)).Returns("C");
-
-            LogAnalyzer target = new LogAnalyzer(logProviderMock.Object);
-
-            target.AnalyzeFile("any file name");
-
-            logProviderMock.Verify(l => l.GetText("any file name", 1, 1), Times.Once());
-            logProviderMock.Verify(l => l.GetText("any file name", 2, 2), Times.Once());
-            logProviderMock.Verify(l => l.GetText("any file name", 3, 3), Times.Once());
-        }
-
-        [TestMethod]
-        public void AnalyzeFile_FileWith3Line_CallLogProvider3TimesLessBrittle()
-        {
-            Mock<ILogProvider> logProviderMock = new Mock<ILogProvider>();
-            logProviderMock.Setup(l => l.GetLineCount()).Returns(3);
-            logProviderMock.Setup(l => l.GetText(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
-                           .Returns("A");
 
             LogAnalyzer target = new LogAnalyzer(logProviderMock.Object);
 
