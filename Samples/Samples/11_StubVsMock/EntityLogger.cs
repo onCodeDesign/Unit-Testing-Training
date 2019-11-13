@@ -18,7 +18,7 @@ namespace Samples._11_StubVsMock
 
         public void Log<T>(T entity, string message) where T : IEntity
         {
-            IFileWriter fileWriter = fileWriterFactory.GetNewWriter("LogFile");
+            IFileWriter fileWriter = fileWriterFactory.GetNewWriter($"{typeof(T).Name}AuditLog.txt");
             
             fileWriter.WriteLine($"Name: {entity.Name} | Message: {message}");
         }
