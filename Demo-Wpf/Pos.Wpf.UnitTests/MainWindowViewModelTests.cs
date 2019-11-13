@@ -40,7 +40,7 @@ namespace Pos.Wpf.UnitTests
 
             scannerSub.Scan("some barcode");
 
-            Assert.AreEqual("14.13 $", vm.ProductPrice);
+            Assert.AreEqual("16.82 $", vm.ProductPrice);
         }
 
         private static IRepository GetRepositoryStub(params Product[] products)
