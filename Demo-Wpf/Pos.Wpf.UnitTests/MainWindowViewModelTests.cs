@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Pos.Wpf.DAL;
 using Pos.Wpf.Services;
 using Pos.Wpf.Services;
@@ -14,16 +15,31 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
-            FakeScanner scanner = new FakeScanner();
+            FakeScanner scannerSub = new FakeScanner();
             FakeRepository repStub = new FakeRepository(new[] {new Product {Barcode = "some barcode", CatalogCode = "SomeProductCode"}});
-            MainWindowViewModel vm = new MainWindowViewModel(scanner, repStub);
+            MainWindowViewModel vm = new MainWindowViewModel(scannerSub, repStub);
 
-            scanner.Scan("some barcode");
+            scannerSub.Scan("some barcode");
 
             Assert.AreEqual("SomeProductCode", vm.ProductCode);
         }
 
-        class FakeScanner : IScanner
+        [TestMethod]
+        public void BarcodeScanned_ProductExists_PriceFormatted()
+        {
+            FakeScanner scannerStub = new FakeScanner();
+            var testData = new[] {new Product {Barcode = "some barcode", Price = 14.131m}};
+            Mock<IRepository> repositoryStub = new Mock<IRepository>();
+            repositoryStub.Setup(r => r.GetEntities<Product>()).Returns(testData.AsQueryable);
+
+            MainWindowViewModel vm = new MainWindowViewModel(scannerStub, repositoryStub.Object);
+
+            scannerStub.Scan("some barcode");
+
+            Assert.AreEqual("14.13 $", vm.ProductPrice);
+        }
+
+        sealed class FakeScanner : IScanner
         {
             public event EventHandler<BarcodeScannedEventArgs> BarcodeScanned;
 
@@ -32,7 +48,7 @@ namespace Pos.Wpf.UnitTests
                 OnBarcodeScanned(new BarcodeScannedEventArgs(someBarcode));
             }
 
-            protected virtual void OnBarcodeScanned(BarcodeScannedEventArgs e)
+            private void OnBarcodeScanned(BarcodeScannedEventArgs e)
             {
                 BarcodeScanned?.Invoke(this, e);
             }
