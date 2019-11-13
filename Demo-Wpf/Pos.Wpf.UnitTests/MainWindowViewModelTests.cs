@@ -40,7 +40,19 @@ namespace Pos.Wpf.UnitTests
 
             scannerSub.Scan("some barcode");
 
-            Assert.AreEqual("16.82 $", vm.ProductPrice);
+            Assert.AreEqual("14.13 $", vm.ProductPrice);
+        }
+
+        [TestMethod]
+        public void BarcodeScanned_ProductWithVat_VatCalculated()
+        {
+            var testDataProduct = new Product { Barcode = "some barcode", HasVat = true, Price = 10m };
+            IRepository repositoryStub = GetRepositoryStub(testDataProduct);
+            MainWindowViewModel vm = GetTarget(repositoryStub);
+
+            scannerSub.Scan("some barcode");
+
+            Assert.AreEqual("11.90 $", vm.ProductPrice);
         }
 
         private static IRepository GetRepositoryStub(params Product[] products)
