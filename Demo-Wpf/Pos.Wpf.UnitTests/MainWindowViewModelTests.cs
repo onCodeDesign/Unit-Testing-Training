@@ -42,19 +42,7 @@ namespace Pos.Wpf.UnitTests
 
             Assert.AreEqual("14.13 $", vm.ProductPrice);
         }
-
-        [TestMethod]
-        public void BarcodeScanned_ProductWithVat_VatCalculated()
-        {
-            var testDataProduct = new Product { Barcode = "some barcode", HasVat = true, Price = 10m };
-            IRepository repositoryStub = GetRepositoryStub(testDataProduct);
-            MainWindowViewModel vm = GetTarget(repositoryStub);
-
-            scannerSub.Scan("some barcode");
-
-            Assert.AreEqual("11.90 $", vm.ProductPrice);
-        }
-
+        
         private static IRepository GetRepositoryStub(params Product[] products)
         {
             Mock<IRepository> repositoryStub = new Mock<IRepository>();
@@ -64,7 +52,11 @@ namespace Pos.Wpf.UnitTests
 
         private MainWindowViewModel GetTarget(IRepository repositoryStub)
         {
-            return new MainWindowViewModel(scannerSub, repositoryStub);
+            Mock<IPriceCalculator> priceCalculatorStub = new Mock<IPriceCalculator>();
+            priceCalculatorStub.Setup(p => p.GetPrice(It.IsAny<Product>()))
+                .Returns<Product>(p => p.Price);
+
+            return new MainWindowViewModel(scannerSub, repositoryStub, priceCalculatorStub.Object);
         }
 
         sealed class FakeScanner : IScanner
