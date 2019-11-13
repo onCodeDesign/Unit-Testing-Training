@@ -9,28 +9,31 @@ namespace Pos.Wpf
     public class MainWindowViewModel : INotifyPropertyChanged
     {
         private readonly IScanner scanner;
+        private readonly IRepository repository;
 
-        public MainWindowViewModel(IScanner scanner)
+        public MainWindowViewModel(IScanner scanner, IRepository repository)
         {
             this.scanner = scanner;
+            this.repository = repository;
+
             this.scanner.BarcodeScanned += ScannerBarcodeScanned;
         }
 
         private void ScannerBarcodeScanned(object sender, BarcodeScannedEventArgs e)
         {
-            using (var db = new MyDbContext())
+            var product = repository.GetEntities<Product>().FirstOrDefault(p => p.Barcode == e.Barcode);
+            if (product != null)
             {
-                var product = db.Products.FirstOrDefault(p => p.Barcode == e.Barcode);
-                if (product != null)
-                    ProductCode = product.CatalogCode;
-                else
-                {
-                    ProductCode = "N/A";
-                }
+                ProductCode = product.CatalogCode;
+            }
+            else
+            {
+                ProductCode = "N/A";
             }
         }
 
         private string productCode;
+
         public string ProductCode
         {
             get { return productCode; }
@@ -42,6 +45,7 @@ namespace Pos.Wpf
         }
 
         private string productName;
+
         public string ProductName
         {
             get { return productName; }
@@ -53,6 +57,7 @@ namespace Pos.Wpf
         }
 
         private string productPrice;
+
         public string ProductPrice
         {
             get { return productPrice; }
