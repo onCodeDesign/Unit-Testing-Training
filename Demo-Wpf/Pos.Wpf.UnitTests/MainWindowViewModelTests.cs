@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -23,7 +22,8 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
-            FakeRepository repStub = new FakeRepository(new[] {new Product {Barcode = "some barcode", CatalogCode = "SomeProductCode"}});
+            Product testDataProduct = new Product {Barcode = "some barcode", CatalogCode = "SomeProductCode"};
+            IRepository repStub = GetRepositoryStub(testDataProduct);
             MainWindowViewModel vm = GetTarget(repStub);
 
             scannerSub.Scan("some barcode");
@@ -34,15 +34,20 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExists_PriceFormatted()
         {
-            var testData = new[] {new Product {Barcode = "some barcode", Price = 14.131m}};
-            Mock<IRepository> repositoryStub = new Mock<IRepository>();
-            repositoryStub.Setup(r => r.GetEntities<Product>()).Returns(testData.AsQueryable);
-
-            MainWindowViewModel vm = GetTarget(repositoryStub.Object);
+            var testDataProduct = new Product {Barcode = "some barcode", Price = 14.131m};
+            IRepository repositoryStub = GetRepositoryStub(testDataProduct);
+            MainWindowViewModel vm = GetTarget(repositoryStub);
 
             scannerSub.Scan("some barcode");
 
             Assert.AreEqual("14.13 $", vm.ProductPrice);
+        }
+
+        private static IRepository GetRepositoryStub(params Product[] products)
+        {
+            Mock<IRepository> repositoryStub = new Mock<IRepository>();
+            repositoryStub.Setup(r => r.GetEntities<Product>()).Returns(products.AsQueryable);
+            return repositoryStub.Object;
         }
 
         private MainWindowViewModel GetTarget(IRepository repositoryStub)
@@ -62,21 +67,6 @@ namespace Pos.Wpf.UnitTests
             private void OnBarcodeScanned(BarcodeScannedEventArgs e)
             {
                 BarcodeScanned?.Invoke(this, e);
-            }
-        }
-
-        class FakeRepository : IRepository
-        {
-            private readonly IEnumerable<Product> products;
-
-            public FakeRepository(IEnumerable<Product> products)
-            {
-                this.products = products;
-            }
-
-            public IQueryable<T> GetEntities<T>() where T : class
-            {
-                return products.Cast<T>().AsQueryable();
             }
         }
     }
