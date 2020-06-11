@@ -25,6 +25,11 @@ namespace Pos.Wpf
             if (product != null)
             {
                 this.ProductCode = product.CatalogCode;
+                decimal price = product.Price;
+                if (product.HasVat)
+                    price = product.Price * 1.19m;
+
+                ProductPrice = $"{price:F2} $";
             }
             else
             {
