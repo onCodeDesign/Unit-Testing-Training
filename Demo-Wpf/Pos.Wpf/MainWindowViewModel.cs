@@ -10,12 +10,13 @@ namespace Pos.Wpf
     {
         private readonly IRepository rep;
         private readonly IScanner scanner;
+        private readonly IPriceCalculator priceCalculator;
 
-
-        public MainWindowViewModel(IScanner scanner, IRepository rep)
+        public MainWindowViewModel(IScanner scanner, IRepository rep, IPriceCalculator priceCalculator)
         {
             this.scanner = scanner;
             this.rep = rep;
+            this.priceCalculator = priceCalculator;
             this.scanner.BarcodeScanned += ScannerBarcodeScanned;
         }
 
@@ -25,10 +26,7 @@ namespace Pos.Wpf
             if (product != null)
             {
                 this.ProductCode = product.CatalogCode;
-                decimal price = product.Price;
-                if (product.HasVat)
-                    price = product.Price * 1.19m;
-
+                decimal price = priceCalculator.GetPrice(product);
                 ProductPrice = $"{price:F2} $";
             }
             else
@@ -38,6 +36,7 @@ namespace Pos.Wpf
         }
 
         private string productCode;
+
 
         public string ProductCode
         {
@@ -50,6 +49,7 @@ namespace Pos.Wpf
         }
 
         private string productName;
+
 
         public string ProductName
         {

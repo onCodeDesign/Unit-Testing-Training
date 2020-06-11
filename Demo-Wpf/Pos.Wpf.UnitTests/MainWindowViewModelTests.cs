@@ -18,7 +18,7 @@ namespace Pos.Wpf.UnitTests
             Product[] testProducts = {new Product{Barcode = "some barcode", CatalogCode = "Some Code"}};
             repStub.Setup(r => r.GetEntities<Product>()).Returns(testProducts.AsQueryable);
 
-            MainWindowViewModel vm = new MainWindowViewModel(scannerStub, repStub.Object);
+            MainWindowViewModel vm = GetTarget(scannerStub, repStub);
 
             scannerStub.Scan("some barcode");
             
@@ -33,7 +33,7 @@ namespace Pos.Wpf.UnitTests
             Mock<IRepository> repositoryStub = new Mock<IRepository>();
             repositoryStub.Setup(r => r.GetEntities<Product>()).Returns(testProducts.AsQueryable);
 
-            MainWindowViewModel vm = new MainWindowViewModel(scannerStub, repositoryStub.Object);
+            MainWindowViewModel vm = GetTarget(scannerStub, repositoryStub);
 
             scannerStub.Scan("some barcode");
 
@@ -41,20 +41,26 @@ namespace Pos.Wpf.UnitTests
         }
 
         [TestMethod]
-        public void BarcodeScanned_ProductWithVat_VatIsApplied()
+        public void BarcodeScanned_ProductNotExists_ProductCodeNotAvailable()
         {
             ScannerTestDouble scannerStub = new ScannerTestDouble();
-            var testProducts = new[] { new Product { Barcode = "some barcode", Price = 10m, HasVat = true} };
-            Mock<IRepository> repositoryStub = new Mock<IRepository>();
-            repositoryStub.Setup(r => r.GetEntities<Product>()).Returns(testProducts.AsQueryable);
+            Mock<IRepository> repStub = new Mock<IRepository>();
+            Product[] testProducts = new Product[0];
+            repStub.Setup(r => r.GetEntities<Product>()).Returns(testProducts.AsQueryable);
 
-            MainWindowViewModel vm = new MainWindowViewModel(scannerStub, repositoryStub.Object);
+            MainWindowViewModel vm = GetTarget(scannerStub, repStub);
 
             scannerStub.Scan("some barcode");
 
-            Assert.AreEqual("11.90 $", vm.ProductPrice);
+            Assert.AreEqual("N/A", vm.ProductCode);
         }
 
+        private static MainWindowViewModel GetTarget(ScannerTestDouble scannerStub, Mock<IRepository> repStub)
+        {
+            Mock<IPriceCalculator> priceCalculatorStub = new Mock<IPriceCalculator>();
+            priceCalculatorStub.Setup(c => c.GetPrice(It.IsAny<Product>())).Returns<Product>(p => p.Price);
+            return new MainWindowViewModel(scannerStub, repStub.Object, priceCalculatorStub.Object);
+        }
 
         sealed class ScannerTestDouble : IScanner
         {
