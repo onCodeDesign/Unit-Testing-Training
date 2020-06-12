@@ -44,7 +44,9 @@ namespace Samples.UnitTests.ContractTest
         {
             string input = @"header;version=1.1.1;\n";
             StandardStringParser parser = GetParser();
+            
             bool result = parser.HasCorrectHeader(input);
+            
             Assert.IsTrue(result);
         }
 
