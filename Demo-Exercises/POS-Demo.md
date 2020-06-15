@@ -61,7 +61,7 @@ The products which have the *Regional Tax* are VAT exempt, even if they would ha
 
 --------------
 
-12. Show a list with all the Products ordered by Name or Price.
+12. Show a list with all the Products ordered by Name and Price.
     a. Test that all the products are shown
     2. Test the order is applied
     

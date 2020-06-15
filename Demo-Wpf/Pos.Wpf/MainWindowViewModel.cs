@@ -1,6 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Effects;
+using Microsoft.EntityFrameworkCore;
 using Pos.Wpf.DAL;
 using Pos.Wpf.Services;
 
@@ -18,6 +22,8 @@ namespace Pos.Wpf
             this.rep = rep;
             this.priceCalculator = priceCalculator;
             this.scanner.BarcodeScanned += ScannerBarcodeScanned;
+
+            this.Products = new ArrayList();
         }
 
         private void ScannerBarcodeScanned(object sender, BarcodeScannedEventArgs e)
@@ -73,12 +79,25 @@ namespace Pos.Wpf
             }
         }
 
+        public ICollection Products { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged([CallerMemberName] string name = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public void ShowProducts(string productNameFilter = null)
+        {
+            IList<Product> products = rep.GetEntities<Product>()
+                
+                .Where(p => EF.)
+                .OrderBy(p => p.CatalogName)
+                
+                .ToList();
+            this.Products = new BindingList<Product>(products);
         }
     }
 }

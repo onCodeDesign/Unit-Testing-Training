@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -10,6 +11,8 @@ namespace Pos.Wpf.UnitTests
     [TestClass]
     public class MainWindowViewModelTests
     {
+
+
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeIsDisplayed()
         {
@@ -53,6 +56,59 @@ namespace Pos.Wpf.UnitTests
             scannerStub.Scan("some barcode");
 
             Assert.AreEqual("N/A", vm.ProductCode);
+        }
+
+        [TestMethod]
+        public void ShowProducts_MoreProducts_ProductsOrderByName()
+        {
+            ScannerTestDouble scannerStub = new ScannerTestDouble();
+            Mock<IRepository> repStub = new Mock<IRepository>();
+            Product[] testData =
+            {
+                new Product {CatalogName = "Mouse"},
+                new Product {CatalogName = "Keyboard"},
+            };
+            repStub.Setup(r => r.GetEntities<Product>())
+                .Returns(testData.AsQueryable);
+
+            MainWindowViewModel vm = GetTarget(scannerStub, repStub);
+
+            
+            vm.ShowProducts();
+            
+            ICollection actualProducts = vm.Products;
+            Product[] expectedProducts = 
+            {
+                new Product {CatalogName = "Keyboard"},
+                new Product {CatalogName = "Mouse"}
+            };
+            CollectionAssert.AreEqual(expectedProducts, actualProducts);
+        }
+
+        [TestMethod]
+        public void ShowProducts_FilterByName_ProductsAreFiltered()
+        {
+            ScannerTestDouble scannerStub = new ScannerTestDouble();
+            Mock<IRepository> repStub = new Mock<IRepository>();
+            Product[] testData =
+            {
+                new Product {CatalogName = "Mouse"},
+                new Product {CatalogName = "Keyboard"},
+            };
+            repStub.Setup(r => r.GetEntities<Product>())
+                .Returns(testData.AsQueryable);
+
+            MainWindowViewModel vm = GetTarget(scannerStub, repStub);
+
+
+            vm.ShowProducts("Mo");
+
+            ICollection actualProducts = vm.Products;
+            Product[] expectedProducts =
+            {
+                new Product {CatalogName = "Mouse"}
+            };
+            CollectionAssert.AreEqual(expectedProducts, actualProducts);
         }
 
         private static MainWindowViewModel GetTarget(ScannerTestDouble scannerStub, Mock<IRepository> repStub)

@@ -6,13 +6,41 @@ using System.Threading.Tasks;
 
 namespace Pos.Wpf.DAL
 {
-    public class Product
+    public class Product : IEquatable<Product>
     {
         public string Barcode { get; set; }
         public string CatalogCode { get; set; }
         public string CatalogName { get; set; }
         public decimal Price { get; set; }
         public Tax[] Taxes { get; set; }
+
+        public bool Equals(Product other)
+        {
+            return this.CatalogName == other.CatalogName;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Product) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool operator ==(Product left, Product right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Product left, Product right)
+        {
+            return !Equals(left, right);
+        }
     }
 
     public class Tax
