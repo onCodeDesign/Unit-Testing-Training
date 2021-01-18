@@ -1,18 +1,16 @@
 package pos.unitTests;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.collection.internal.PersistentList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import pos.BarcodeScanner.BarcodeScannedEvent;
 import pos.BarcodeScanner.BarcodeScannedEventListener;
 import pos.BarcodeScanner.Scanner;
 import pos.MainWindowPresenter;
+import pos.dal.Product;
+import pos.dal.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class MainWindowPresenterUnitTest {
 
@@ -20,16 +18,24 @@ class MainWindowPresenterUnitTest {
     void barcodeScanned_productExists_productCodeReturned() {
         //arrange
         FakeScanner scanner = new FakeScanner();
-        MainWindowPresenter presenter = new MainWindowPresenter(scanner);
+        ProductRepository repStub = new FakeProductRepository(getNewTestProduct("some barcode", "some code"));
+        MainWindowPresenter presenter = new MainWindowPresenter(scanner, repStub);
 
         //act
-        scanner.scan("some code");
+        scanner.scan("some barcode");
 
         //assert
         Assertions.assertEquals("some code", presenter.getProductCode());
     }
 
-    class FakeScanner implements Scanner {
+    private Product getNewTestProduct(String barcode, String code) {
+        Product p = new Product();
+        p.setBarcode(barcode);
+        p.setCatalogCode(code);
+        return  p;
+    }
+
+    private class FakeScanner implements Scanner {
 
         private List<BarcodeScannedEventListener> eventListeners = new ArrayList<>();
 
@@ -38,10 +44,23 @@ class MainWindowPresenterUnitTest {
             eventListeners.add(eventListener);
         }
 
-        public void scan(String someCode) {
-            for ( BarcodeScannedEventListener eventListener : eventListeners) {
-                eventListener.BarcodeScanned(new BarcodeScannedEvent(this, someCode));
+        public void scan(String barcode) {
+            for (BarcodeScannedEventListener eventListener : eventListeners) {
+                eventListener.BarcodeScanned(new BarcodeScannedEvent(this, barcode));
             }
+        }
+    }
+
+    private class FakeProductRepository implements ProductRepository {
+        private Product product;
+
+        private FakeProductRepository(Product product) {
+            this.product = product;
+        }
+
+        @Override
+        public Product getProductByBarcode(String barcode) {
+            return product;
         }
     }
 }

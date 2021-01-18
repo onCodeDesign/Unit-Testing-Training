@@ -1,45 +1,34 @@
 package pos;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import pos.BarcodeScanner.BarcodeScannedEvent;
 import pos.BarcodeScanner.BarcodeScannedEventListener;
 import pos.BarcodeScanner.Scanner;
-import pos.dal.HibernateUtil;
 import pos.dal.Product;
-
-import java.util.List;
+import pos.dal.ProductRepository;
 
 public class MainWindowPresenter implements BarcodeScannedEventListener {
     private Scanner scanner;
+    private ProductRepository productsRepository;
 
     private String productCode;
     private String productName;
     private String productPrice;
 
-    public MainWindowPresenter(Scanner scanner) {
+    public MainWindowPresenter(Scanner scanner, ProductRepository productsRepository) {
         this.scanner = scanner;
+        this.productsRepository = productsRepository;
         scanner.addBarcodeScannedEventListener(this);
     }
 
     @Override
     public void BarcodeScanned(BarcodeScannedEvent event) {
-        Session session = HibernateUtil.getCurrentSessionFactory().getCurrentSession();
-        session.beginTransaction();
+        Product product = productsRepository.getProductByBarcode(event.getBarcode());
 
-        List<Product> productList =  session.createQuery("from Product as p where p.barcode = :barcode", Product.class)
-                .setParameter(":barcode", event.getBarcode())
-                .list();
-
-        if (productList.size() > 0) {
-            Product product = productList.get(0);
+        if (product != null) {
             this.productCode = product.getCatalogCode();
         } else {
             this.productCode = "N/A";
         }
-
-        session.getTransaction().commit();
-        session.close();
     }
 
     public String getProductCode() {
