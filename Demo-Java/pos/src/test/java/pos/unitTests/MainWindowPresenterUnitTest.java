@@ -8,24 +8,45 @@ import pos.BarcodeScanner.Scanner;
 import pos.MainWindowPresenter;
 import pos.dal.Product;
 import pos.dal.ProductRepository;
+import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 class MainWindowPresenterUnitTest {
 
     @Test
     void barcodeScanned_productExists_productCodeReturned() {
-        //arrange
         FakeScanner scanner = new FakeScanner();
         ProductRepository repStub = new FakeProductRepository(getNewTestProduct("some barcode", "some code"));
         MainWindowPresenter presenter = new MainWindowPresenter(scanner, repStub);
 
-        //act
         scanner.scan("some barcode");
 
-        //assert
         Assertions.assertEquals("some code", presenter.getProductCode());
+    }
+
+    @Test
+    void barcodeScanned_productExists_priceFormatted() {
+        FakeScanner scanner = new FakeScanner();
+        var testData = getNewTestProduct("some barcode", 14.131);
+        ProductRepository repStub = mock(ProductRepository.class);
+        when(repStub.getProductByBarcode(any(String.class))).thenReturn(testData);
+
+        MainWindowPresenter presenter = new MainWindowPresenter(scanner, repStub);
+
+
+        scanner.scan("some barcode");
+
+        Assertions.assertEquals("14.13 $", presenter.getProductPrice());
+    }
+
+    private Product getNewTestProduct(String barcode, double price) {
+        Product p = new Product();
+        p.setBarcode(barcode);
+        p.setPrice(price);
+        return  p;
     }
 
     private Product getNewTestProduct(String barcode, String code) {

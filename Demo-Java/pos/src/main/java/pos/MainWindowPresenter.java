@@ -7,8 +7,8 @@ import pos.dal.Product;
 import pos.dal.ProductRepository;
 
 public class MainWindowPresenter implements BarcodeScannedEventListener {
-    private Scanner scanner;
-    private ProductRepository productsRepository;
+    private final Scanner scanner;
+    private final ProductRepository productsRepository;
 
     private String productCode;
     private String productName;
@@ -26,8 +26,10 @@ public class MainWindowPresenter implements BarcodeScannedEventListener {
 
         if (product != null) {
             this.productCode = product.getCatalogCode();
+            this.productPrice = String.format("%.2f $", product.getPrice());
         } else {
             this.productCode = "N/A";
+            this.productPrice = "N/A";
         }
     }
 
