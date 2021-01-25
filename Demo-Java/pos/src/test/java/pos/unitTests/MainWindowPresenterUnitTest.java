@@ -1,6 +1,7 @@
 package pos.unitTests;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pos.BarcodeScanner.BarcodeScannedEvent;
 import pos.BarcodeScanner.BarcodeScannedEventListener;
@@ -15,31 +16,39 @@ import java.util.List;
 
 
 class MainWindowPresenterUnitTest {
+    private FakeScanner scanner;
+
+    @BeforeEach
+    void initialize() {
+        scanner = new FakeScanner();
+    }
 
     @Test
     void barcodeScanned_productExists_productCodeReturned() {
-        FakeScanner scanner = new FakeScanner();
         ProductRepository repStub = new FakeProductRepository(getNewTestProduct("some barcode", "some code"));
-        MainWindowPresenter presenter = new MainWindowPresenter(scanner, repStub);
+        MainWindowPresenter target = getTarget(repStub);
 
         scanner.scan("some barcode");
 
-        Assertions.assertEquals("some code", presenter.getProductCode());
+        Assertions.assertEquals("some code", target.getProductCode());
     }
 
     @Test
     void barcodeScanned_productExists_priceFormatted() {
-        FakeScanner scanner = new FakeScanner();
         var testData = getNewTestProduct("some barcode", 14.131);
         ProductRepository repStub = mock(ProductRepository.class);
         when(repStub.getProductByBarcode(any(String.class))).thenReturn(testData);
 
-        MainWindowPresenter presenter = new MainWindowPresenter(scanner, repStub);
+        MainWindowPresenter target = getTarget(repStub);
 
 
         scanner.scan("some barcode");
 
-        Assertions.assertEquals("14.13 $", presenter.getProductPrice());
+        Assertions.assertEquals("14.13 $", target.getProductPrice());
+    }
+
+    private MainWindowPresenter getTarget(ProductRepository repStub) {
+        return new MainWindowPresenter(scanner, repStub);
     }
 
     private Product getNewTestProduct(String barcode, double price) {
