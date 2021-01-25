@@ -25,7 +25,8 @@ class MainWindowPresenterUnitTest {
 
     @Test
     void barcodeScanned_productExists_productCodeReturned() {
-        ProductRepository repStub = new FakeProductRepository(getNewTestProduct("some barcode", "some code"));
+        Product testData = getNewTestProduct("some barcode", "some code");
+        ProductRepository repStub = getRepositoryStub(testData);
         MainWindowPresenter target = getTarget(repStub);
 
         scanner.scan("some barcode");
@@ -35,16 +36,19 @@ class MainWindowPresenterUnitTest {
 
     @Test
     void barcodeScanned_productExists_priceFormatted() {
-        var testData = getNewTestProduct("some barcode", 14.131);
-        ProductRepository repStub = mock(ProductRepository.class);
-        when(repStub.getProductByBarcode(any(String.class))).thenReturn(testData);
-
+        Product testData = getNewTestProduct("some barcode", 14.131);
+        ProductRepository repStub = getRepositoryStub(testData);
         MainWindowPresenter target = getTarget(repStub);
-
 
         scanner.scan("some barcode");
 
         Assertions.assertEquals("14.13 $", target.getProductPrice());
+    }
+
+    private ProductRepository getRepositoryStub(Product testData) {
+        ProductRepository repStub = mock(ProductRepository.class);
+        when(repStub.getProductByBarcode(any(String.class))).thenReturn(testData);
+        return repStub;
     }
 
     private MainWindowPresenter getTarget(ProductRepository repStub) {
@@ -66,7 +70,6 @@ class MainWindowPresenterUnitTest {
     }
 
     private class FakeScanner implements Scanner {
-
         private List<BarcodeScannedEventListener> eventListeners = new ArrayList<>();
 
         @Override
@@ -78,19 +81,6 @@ class MainWindowPresenterUnitTest {
             for (BarcodeScannedEventListener eventListener : eventListeners) {
                 eventListener.BarcodeScanned(new BarcodeScannedEvent(this, barcode));
             }
-        }
-    }
-
-    private class FakeProductRepository implements ProductRepository {
-        private Product product;
-
-        private FakeProductRepository(Product product) {
-            this.product = product;
-        }
-
-        @Override
-        public Product getProductByBarcode(String barcode) {
-            return product;
         }
     }
 }
