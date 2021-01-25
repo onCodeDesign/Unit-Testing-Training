@@ -26,7 +26,12 @@ public class MainWindowPresenter implements BarcodeScannedEventListener {
 
         if (product != null) {
             this.productCode = product.getCatalogCode();
-            this.productPrice = String.format("%.2f $", product.getPrice()*1.19);
+            Double price = product.getPrice();
+            if (product.hasVat()) {
+                price *= 1.19;
+            }
+            this.productPrice = String.format("%.2f $", price);
+
         } else {
             this.productCode = "N/A";
             this.productPrice = "N/A";

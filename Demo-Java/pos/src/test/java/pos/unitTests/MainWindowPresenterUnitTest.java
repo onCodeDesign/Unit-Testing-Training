@@ -42,7 +42,18 @@ class MainWindowPresenterUnitTest {
 
         scanner.scan("some barcode");
 
-        Assertions.assertEquals("16.82 $", target.getProductPrice());
+        Assertions.assertEquals("14.13 $", target.getProductPrice());
+    }
+
+    @Test
+    void barcodeScanned_productWithVat_VatCalculated() {
+        Product testData = getNewTestProduct("some barcode", 10, true);
+        ProductRepository repStub = getRepositoryStub(testData);
+        MainWindowPresenter target = getTarget(repStub);
+
+        scanner.scan("some barcode");
+
+        Assertions.assertEquals("11.90 $", target.getProductPrice());
     }
 
     private ProductRepository getRepositoryStub(Product testData) {
@@ -53,6 +64,12 @@ class MainWindowPresenterUnitTest {
 
     private MainWindowPresenter getTarget(ProductRepository repStub) {
         return new MainWindowPresenter(scanner, repStub);
+    }
+
+    private Product getNewTestProduct(String barcode, double price, boolean hasVat) {
+        Product product = getNewTestProduct(barcode, price);
+        product.setHasVat(hasVat);
+        return product;
     }
 
     private Product getNewTestProduct(String barcode, double price) {

@@ -5,6 +5,7 @@ public class Product {
     private String catalogCode;
     private String catalogName;
     private Double price;
+    private boolean hasVat;
 
     public Product() {
     }
@@ -22,4 +23,7 @@ public class Product {
     public void setPrice(Double price) {
         this.price = price;
     }
+
+    public boolean hasVat() { return hasVat; }
+    public void setHasVat(boolean hasVat) { this.hasVat = hasVat; }
 }
