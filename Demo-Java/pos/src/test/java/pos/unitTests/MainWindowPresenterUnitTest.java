@@ -42,7 +42,7 @@ class MainWindowPresenterUnitTest {
 
         scanner.scan("some barcode");
 
-        Assertions.assertEquals("14.13 $", target.getProductPrice());
+        Assertions.assertEquals("16.82 $", target.getProductPrice());
     }
 
     private ProductRepository getRepositoryStub(Product testData) {
@@ -66,6 +66,7 @@ class MainWindowPresenterUnitTest {
         Product p = new Product();
         p.setBarcode(barcode);
         p.setCatalogCode(code);
+        p.setPrice(0.0);
         return  p;
     }
 
