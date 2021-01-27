@@ -18,7 +18,7 @@ namespace Pos.Wpf.Services
 
             if (product.Taxes.Contains(TaxationType.Vat) && !regionalApplied)
             {
-                currentPrice = currentPrice + product.Price * 0.22m;
+                currentPrice = currentPrice + product.Price * 0.19m;
             }
 
             if (product.Taxes.Contains(TaxationType.LuxuryTax))
