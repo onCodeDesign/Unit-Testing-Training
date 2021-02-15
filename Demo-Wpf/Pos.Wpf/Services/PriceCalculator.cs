@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Data.Entity;
+using System.Linq;
 using Pos.Wpf.DAL;
 
 namespace Pos.Wpf.Services
@@ -23,10 +24,41 @@ namespace Pos.Wpf.Services
 
             if (product.Taxes.Contains(TaxationType.LuxuryTax))
             {
-                currentPrice = currentPrice + product.Price * 0.5m;
+                if (currentPrice < 100)
+                {
+                    currentPrice += product.Price * 0.15m;
+                }
+                else if (currentPrice < 70000)
+                {
+                    if (product.Category == GoodsCategory.Specialty)
+                    {
+                        currentPrice *= 2;
+                    }
+                    else
+                    {
+                        currentPrice = currentPrice + product.Price * 0.75m;
+                    }
+                }
+                else
+                {
+                    if (product.Category == GoodsCategory.Specialty)
+                    {
+                        currentPrice = currentPrice + currentPrice * 1.8m;
+                    }
+                    else if (product.Category == GoodsCategory.Shopping)
+                    {
+                        currentPrice = currentPrice + product.Price * 1.8m;
+                    }
+                    else
+                    {
+                        currentPrice = currentPrice + product.Price * 1.5m;
+                    }
+                }
             }
 
             return currentPrice;
         }
     }
+
+    
 }
