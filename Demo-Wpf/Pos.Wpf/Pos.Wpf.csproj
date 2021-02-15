@@ -68,7 +68,12 @@
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Services\BarcodeScannedEventArgs.cs" />
     <Compile Include="Services\IScanner.cs" />
+    <Compile Include="Services\Taxes\ITax.cs" />
     <Compile Include="Services\PriceCalculator.cs" />
+    <Compile Include="Services\Taxes\ITaxesFactory.cs" />
+    <Compile Include="Services\Taxes\LuxuryTax.cs" />
+    <Compile Include="Services\Taxes\RegionalTax.cs" />
+    <Compile Include="Services\Taxes\Vat.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -113,5 +118,6 @@
   <ItemGroup>
     <Resource Include="TextFile1.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

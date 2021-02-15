@@ -1,6 +1,9 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Pos.Wpf.DAL;
 using Pos.Wpf.Services;
+using Pos.Wpf.Services.Taxes;
 
 namespace Pos.Wpf.UnitTests
 {
@@ -53,7 +56,10 @@ namespace Pos.Wpf.UnitTests
 
         private PriceCalculator GetTarget()
         {
-            return new PriceCalculator();
+            Mock<ITaxesFactory> taxesFactory = new Mock<ITaxesFactory>();
+            taxesFactory.Setup(tf => tf.GetTaxesFor(It.IsAny<Product>())).Returns(Enumerable.Empty<ITax>());
+            
+            return new PriceCalculator(taxesFactory.Object);
         }
     }
 }
