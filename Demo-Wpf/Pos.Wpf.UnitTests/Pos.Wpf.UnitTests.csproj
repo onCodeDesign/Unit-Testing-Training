@@ -68,6 +68,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LuxuryTaxTests.cs" />
     <Compile Include="MainWindowViewModelTests.cs" />
     <Compile Include="PriceCalculatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
