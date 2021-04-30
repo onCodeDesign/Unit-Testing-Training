@@ -15,47 +15,89 @@
 
 ***************************************
 
-[Flags]
-public enum TaxingType
+public enum TaxationType
 {
-    None = 0,
-    Tva = 1,
-    RegionalTax = 2,
-    Discount = 4
+     Vat,
+     RegionalTax,
+     LuxuryTax,
+     Discount
+}
+
+public class Product
+{
+    //...
+    public TaxationType[] Taxes { get; set; }
 }
 
 ****************
 
-        public decimal GetPrice(Product product)
-        {
-            decimal currentPrice = product.Price;
+public decimal GetPrice(Product product)
+{
+    decimal currentPrice = product.Price;
 
-            var taxes = taxProvider.GetTaxes(product);
+    bool regionalApplied = false;
+    if (product.Taxes.Contains(TaxationType.RegionalTax))
+    {
+        currentPrice = currentPrice + product.Price * 0.1m;
+        regionalApplied = true;
+    }
 
-            bool regionalApplied = false;
-            if (product.Taxes.HasFlag(TaxingType.RegionalTax))
-            {
-                currentPrice = currentPrice + product.Price * 0.1m;
-                regionalApplied = true;
-            }
+    if (product.Taxes.Contains(TaxationType.Vat) && !regionalApplied)
+    {
+        currentPrice = currentPrice + product.Price * 0.19m;
+    }
 
-            if (product.Taxes.HasFlag(TaxingType.Tva) && !regionalApplied)
-            {
-                currentPrice = currentPrice + product.Price * 0.22m;
-            }
+    if (product.Taxes.Contains(TaxationType.LuxuryTax))
+    {
+        currentPrice = currentPrice + product.Price * 0.5m;
+    }
 
-            if (product.Taxes.HasFlag(TaxingType.LuxuryTax))
-            {
-                currentPrice = currentPrice + product.Price * 0.5m;
-            }
+    if (product.Taxes.Contains(TaxationType.Discount))
+    {
+        currentPrice = currentPrice - currentPrice * 0.3m;
+    }
 
-            if (product.Taxes.HasFlag(TaxingType.Discount))
-            {
-                currentPrice = currentPrice - currentPrice * 0.3m;
-            }
+    return currentPrice;
+}
 
-            return currentPrice;
-        }
+***********************************
+
+
+ if (product.Taxes.Contains(TaxationType.LuxuryTax))
+ {
+     currentPrice = currentPrice + product.Price * 0.5m;
+     if (currentPrice < 100)
+     {
+         currentPrice += product.Price * 0.15m;
+     }
+     else if (currentPrice < 70000)
+     {
+         if (product.Category == GoodsCategory.Specialty)
+         {
+             currentPrice *= 2;
+         }
+         else
+         {
+             currentPrice = currentPrice + product.Price * 0.75m;
+         }
+     }
+     else
+     {
+         if (product.Category == GoodsCategory.Specialty)
+         {
+             currentPrice = currentPrice + currentPrice * 1.8m;
+         }
+         else if (product.Category == GoodsCategory.Shopping)
+         {
+             currentPrice = currentPrice + product.Price * 1.8m;
+         }
+         else
+         {
+             currentPrice = currentPrice + product.Price * 1.5m;
+         }
+     }
+ }
+
 
 **************************
 

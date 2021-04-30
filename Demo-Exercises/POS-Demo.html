@@ -12,41 +12,101 @@
 <li><p>When a barcode is scanned the POS should display the product details</p>
 <ol type="a">
 <li>Test that when a product exists the product code is displayed</li>
-<li>Test that when a product exists the price has currency symbol</li>
+<li>Test that when a product exists the price is formatted with a currency symbol and two decimals. Ex. Product.Price=14.131 =&gt; '14.13 $'</li>
 <li>Test that when the barcode has upper case or spaces the repository is called with lower case and trim</li>
 <li>Test when product is not found</li>
 </ol>
 </li>
-<li><p>Add VAT to product price and display it. Implement it as easy as possible. Test it as easy as possible. The VAT rate is <code>19%</code>.</p>
+<li><p>Add VAT to product price and display it.</p>
 <ol type="a">
+<li>Implement it as easy as possible. Test it as easy as possible.
+The VAT rate is fixed and the same for all products to <code>19%</code>.</li>
 <li>Not all products have VAT. Add functionality to support product with and without VAT.</li>
 </ol>
 </li>
 </ol>
-<p>A product may have 0 or more taxes.
-For simplicity we may represent taxes with a flag enum:</p>
-<pre><code>[Flags]
-public enum TaxingType
+<p>A product may have different taxation types. For simplicity we may represent them with an enum:</p>
+<pre><code>public enum TaxationType
 {
-    None = 0,
-    Vat = 1,
-    RegionalTax = 2,    
+     Vat,
+     RegionalTax,
+     LuxuryTax
 }
+
+public class Product
+{
+    //...
+    public TaxationType[] Taxes { get; set; }
+}
+
 </code></pre>
 <ol start="3">
 <li><p>There are products which have a Regional Tax. The <em>Regional Tax</em> is <code>10%</code>.
-The products which have the <em>Regional Tax</em> are VAT exempt, even if they would have VAT</p>
+The products which have the <em>Regional Tax</em> are VAT exempt, even if they have VAT</p>
 <p>Calculate the final price of a product by taking into account the regional tax as well.</p>
 <ol type="a">
 <li>Test that the correct price is displayed for products with only VAT</li>
 <li>Test that the correct price is displayed for products which have VAT and Regional Tax</li>
+<li>Test that for a product which has no taxes its catalog price is displayed</li>
 </ol>
 </li>
-<li><p>Some products are considered <em>Luxury Products</em>, and for these a Luxury Tax applies. This tax applies regardless of other taxes</p>
+<li><p>Some products are considered <em>Luxury Products</em>, and for these a Luxury Tax applies.
+Luxury tax calculation depends on product goods category. We consider these categories:</p>
+</li>
+</ol>
+<pre><code>public enum GoodsCategory
+{
+    /// &lt;summary&gt;
+    /// Specialty goods have particularly unique characteristics and brand identifications for which a significant group of buyers is willing to make a special purchasing effort.
+    /// &lt;para&gt;
+    ///     Examples include specific brands of fancy products, luxury cars, professional photographic equipment, and high-fashion clothing.
+    /// &lt;/para&gt;
+    /// &lt;/summary&gt;
+    Specialty,
+
+    /// &lt;summary&gt;
+    /// Convenience goods are those that are regularly consumed and are readily available for purchase.
+    /// &lt;para&gt;
+    ///     These goods are mostly sold by wholesalers and retailers and include items such as milk and tobacco products.
+    /// &lt;/para&gt;
+    /// &lt;/summary&gt;
+    Convenience,
+
+    /// &lt;summary&gt;
+    /// Shopping goods are those in which a purchase requires more thought and planning than with convenience goods
+    /// &lt;para&gt;
+    ///     Shopping goods are more expensive and have more durability and longer lifespans than convenience goods
+    ///     Shopping goods include furniture and televisions.
+    /// &lt;/para&gt;
+    /// &lt;/summary&gt;
+    Shopping
+}
+</code></pre>
+<pre><code>Luxury tax calculates as follows:
+    - for all the products that are cheaper than 100, the tax is 15%
+    - for products with price between 35 - 70k, the tax is 100% for Specialties and 75% for the rest
+    - for products that are more expensive the 70k:
+        - for Specialties is 180% on top of the price with the Regional Tax applied if that products has a RegionalTax
+        - for Shopping is 180% on top of the catalog price
+        - for the other is 150%
+Calculate price of products w/ luxury tax as specified above.
+        
+</code></pre>
+<ol start="5">
+<li><p>Test price calculation for product w/ luxury tax</p>
 <ol type="a">
-<li>Test that the final price is correctly calculated for a product with
-more taxes</li>
-<li>Test that for a product which has no taxes its catalog price is displayed</li>
+<li>Test for a Product with LuxuryTax and price 99</li>
+<li>Test for a Product with Regional and Luxury taxes, price above 100k, and in Specialty category</li>
+</ol>
+</li>
+<li><p>Why is it difficult to name and write GOOD Unit Tests for Price Calculator?
+Refactor PriceCalculator to separate the logic to decide which taxes should be applied for a product from the logic to calculate each tax.</p>
+<ol type="a">
+<li>Rewrite existent PriceCalculatorTests that verify which taxes should be applied for a product in TaxesFactoryTests.
+Have a test that checks the case of a product with both RegionalTax and VAT, only Regional Tax will be applied</li>
+<li>Have a test for products with no taxes</li>
+<li>Have a test that verifies that for a product with all three taxes, only Regional and Luxury are returned</li>
+<li>Rewrite the all tests from PriceCalculatorTests to TaxesFactoryTests and specific tax calculators</li>
 </ol>
 </li>
 <li><p>There are products for which we offer a discount of 50%. The discount is applied at the end from the total price.</p>
@@ -57,7 +117,7 @@ more taxes</li>
 <ul>
 <li>each time a new product is scanned the <em>Sub Total</em> is also updated</li>
 </ul>
-<ol start="7">
+<ol start="9">
 <li><p>The cashier may Close a running sale. The total will be displayed, when the sale is closed</p>
 </li>
 <li><p>The cashier may Cancel a running sale.</p>
@@ -68,7 +128,7 @@ more taxes</li>
 <ul>
 <li>the discount cannot be higher than 50% the the sale total</li>
 </ul>
-<ol start="10">
+<ol start="12">
 <li><p>Show a list with all the sales ordered by status (Closed, or Canceled) and by date.</p>
 <ol type="a">
 <li>Test that all sales are shown</li>
@@ -79,7 +139,7 @@ more taxes</li>
 </li>
 </ol>
 <hr />
-<ol start="12">
+<ol start="14">
 <li><p>Show a list with all the Products ordered by Name or Price.</p>
 <ol type="a">
 <li>Test that all the products are shown</li>
