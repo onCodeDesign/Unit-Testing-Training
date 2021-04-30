@@ -21,17 +21,6 @@ namespace Pos.Wpf.UnitTests
             Assert.AreEqual(10m, actualPrice);
         }
 
-        [TestMethod]
-        public void GetPrice_Over70kPricedProductWithRegionalTaxAndWithLuxuryTaxInSpecialtyCategory_RegionalTaxAdnSpecialtyTaxApplied()
-        {
-            PriceCalculator target = GetTarget();
-            Product product = new Product {Price = 100000m, Taxes = new[] {TaxationType.RegionalTax, TaxationType.LuxuryTax}, Category = GoodsCategory.Specialty};
-
-            decimal actualPrice = target.GetPrice(product);
-
-            Assert.AreEqual(308000, actualPrice);
-        }
-
         private PriceCalculator GetTarget()
         {
             Mock<ITaxesFactory> taxesFactory = new Mock<ITaxesFactory>();
