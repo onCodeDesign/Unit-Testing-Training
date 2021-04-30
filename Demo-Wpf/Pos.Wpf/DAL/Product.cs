@@ -12,7 +12,7 @@ namespace Pos.Wpf.DAL
         public string CatalogCode { get; set; }
         public string CatalogName { get; set; }
         public decimal Price { get; set; }
-        public TaxationType[] Taxes { get; set; }
+        public TaxationType[] Taxes { get; set; } = new TaxationType[0];
         public GoodsCategory Category { get; set; } = GoodsCategory.Convenience;
     }
 
