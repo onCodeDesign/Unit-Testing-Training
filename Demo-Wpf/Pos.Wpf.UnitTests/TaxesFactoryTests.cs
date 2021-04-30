@@ -12,51 +12,40 @@ namespace Pos.Wpf.UnitTests
     public class TaxesFactoryTests
     {
         [TestMethod]
-        public void GetTaxesFor_ProductWithVatOnly_OnlyVatTaxReturned()
-        {
-            TaxesFactory target = GetTarget();
-            Product product = new Product { Taxes = new[] { TaxationType.Vat } };
-
-            var actualTaxes = target.GetTaxesFor(product);
-
-            var actualTaxesTypes = actualTaxes.Select(x => x.GetType());
-            AssertEx.AreEquivalent(actualTaxesTypes, typeof(Vat));
-        }
+        public void GetTaxesFor_ProductWithVatOnly_OnlyVatTaxReturned() => RunTest__GetTaxes(
+            new[] { TaxationType.Vat },
+            new[] { typeof(Vat)});
+        
 
         [TestMethod]
-        public void GetTaxesFor_ProductWithVatAndRegionalTax_OnlyRegionalTaxReturned()
-        {
-            TaxesFactory target = GetTarget();
-            Product product = new Product { Taxes = new[] { TaxationType.Vat, TaxationType.RegionalTax } };
-
-            var actualTaxes = target.GetTaxesFor(product);
-
-            var actualTaxesTypes = actualTaxes.Select(x => x.GetType());
-            AssertEx.AreEquivalent(actualTaxesTypes, typeof(RegionalTax));
-
-        }
+        public void GetTaxesFor_ProductWithVatAndRegionalTax_OnlyRegionalTaxReturned() => RunTest__GetTaxes(
+            new[] {TaxationType.Vat, TaxationType.RegionalTax},
+            new[] {typeof(RegionalTax)});
 
         [TestMethod]
-        public void GetTaxes_ForProductWithNoTaxes_NoTaxesReturned()
-        {
-            TaxesFactory target = GetTarget();
-            Product product = new Product();
-
-            var actualTaxes = target.GetTaxesFor(product);
-
-            Assert.AreEqual(0, actualTaxes.Count());
-        }
+        public void GetTaxes_ForProductWithNoTaxes_NoTaxesReturned() => RunTest__GetTaxes(
+            new TaxationType[] { },
+            new Type[] { });
 
         [TestMethod]
-        public void GetTaxes_ForProductWithAllTaxes_RegionalAndLuxuryReturned()
+        public void GetTaxes_ForProductWithAllTaxes_RegionalAndLuxuryReturned() => RunTest__GetTaxes(
+            new[] {TaxationType.Vat, TaxationType.RegionalTax, TaxationType.LuxuryTax},
+            new[] {typeof(RegionalTax), typeof(LuxuryTax)});
+
+        [TestMethod]
+        public void GetTaxes_ForProductWithRegionalAndLuxury_RegionalAndLuxuryReturned() => RunTest__GetTaxes(
+            new[] {TaxationType.RegionalTax, TaxationType.LuxuryTax},
+            new[] {typeof(RegionalTax), typeof(LuxuryTax)});
+
+        private void RunTest__GetTaxes(TaxationType[] taxes, Type[] expectedTaxTypes)
         {
             var target = GetTarget();
-            Product product = new Product{Taxes = new [] {TaxationType.Vat, TaxationType.RegionalTax, TaxationType.LuxuryTax}};
+            Product product = new Product { Taxes = taxes };
 
             var actualTaxes = target.GetTaxesFor(product);
 
             IEnumerable<Type> actualTaxesTypes = actualTaxes.Select(x => x.GetType());
-            AssertEx.AreEquivalent(actualTaxesTypes, typeof(RegionalTax), typeof(LuxuryTax));
+            AssertEx.AreEquivalent(actualTaxesTypes, expectedTaxTypes);
         }
 
         private TaxesFactory GetTarget()
