@@ -11,7 +11,7 @@ namespace Samples.UnitTests.AbstractClassTesting
         [TestMethod]
         public void GetAllLogEntries_FileEmpty_NoEntriesAreReturned()
         {
-            LogParser target = new TestableLogParser(new string[0]);
+            LogParser target = new TestableLogParser(Array.Empty<string>());
 
             var entries = target.GetAllLogEntries();
 
