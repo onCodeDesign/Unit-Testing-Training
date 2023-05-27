@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,5 +13,5 @@ namespace Pos.Wpf.DAL
         public string CatalogCode { get; set; }
         public string CatalogName { get; set; }
         public decimal Price { get; set; }
-    }   
+    }
 }
