@@ -1,6 +1,6 @@
 # Implement a POS (Point of Sale) system
 
-Implement in an interactive way the following functionalities of a POS. When working on each point do NOT take into account the next functionalities that will come, but try to implement the current one as simple as possible. Later when new features are added refactor.
+Implement in an interative way the following functionalities of a POS. When working on each lab do NOT take into account the next functionalities that will come, but try to implement the current one as simple as possible. Later when new features are added refactor.
 
 Keep the Code-Test cycle as short as possible. Refactor each time everything is green.
 
