@@ -2,9 +2,9 @@ using System.IO;
 
 namespace Samples._04_PropertyInjection
 {
-    internal class MapFileEixsts
+    internal class MapFileExists
     {
-        private IFileSystemGateway fileSystem = null;//= new FileSystemGateway(); <-- for existent code
+        private IFileSystemGateway fileSystem = new FileSystemGateway(); //<-- for existent code
 
         public IFileSystemGateway FileSystem
         {

@@ -19,7 +19,6 @@ namespace Samples._11_StubVsMock
 			Assert.AreEqual(expected, fileWriterMock.Line);
 		}
 
-
 		private class FileWriterDouble : IFileWriter
 		{
 			public void WriteLine(string line)
