@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Pos.Wpf.DAL;
 using Pos.Wpf.Services;
 
 namespace Pos.Wpf.UnitTests
@@ -10,30 +12,54 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
-            //arrange
+            Product product = new Product { CatalogCode = "product code", Barcode = "some barcode" };
+            RepositoryDouble repository = new RepositoryDouble(product);
             ScannerDouble scannerStub = new ScannerDouble();
-            MainWindowViewModel vm = new MainWindowViewModel(scannerStub);
-            
-            //act
-            scannerStub.Scan("product code");
-            
-            // assert
+            MainWindowViewModel vm = new MainWindowViewModel(scannerStub, repository);
+
+            scannerStub.Scan("some barcode");
+
             Assert.AreEqual("product code", vm.ProductCode);
         }
-    }
 
-    public class ScannerDouble : IScanner
-    {
-        public event EventHandler<BarcodeScannedEventArgs> BarcodeScanned;
-
-        protected virtual void OnBarcodeScanned(BarcodeScannedEventArgs e)
+        [TestMethod]
+        public void BarcodeScanned_ProductExist_PriceFormatted()
         {
-            BarcodeScanned?.Invoke(this, e);
+            Product product = new Product { Barcode = "some barcode", Price = 14.131m };
+
+            ScannerDouble scanner = new ScannerDouble();
+            RepositoryDouble repository = new RepositoryDouble(product);
+            MainWindowViewModel vm = new MainWindowViewModel(scanner, repository);
+
+            scanner.Scan("some barcode");
+
+            Assert.AreEqual("14.13 $", vm.ProductPrice);
         }
 
-        public void Scan(string someCode)
+
+        private class ScannerDouble : IScanner
         {
-            OnBarcodeScanned(new BarcodeScannedEventArgs(someCode));
+            public event EventHandler<BarcodeScannedEventArgs> BarcodeScanned;
+
+            public void Scan(string barcode)
+            {
+                BarcodeScanned?.Invoke(this, new BarcodeScannedEventArgs(barcode));
+            }
+        }
+
+        public class RepositoryDouble : IRepository
+        {
+            private readonly Product[] product;
+
+            public RepositoryDouble(params Product[] product)
+            {
+                this.product = product;
+            }
+
+            public IQueryable<T> GetEntities<T>() where T : class
+            {
+                return product.Cast<T>().AsQueryable();
+            }
         }
     }
 }
