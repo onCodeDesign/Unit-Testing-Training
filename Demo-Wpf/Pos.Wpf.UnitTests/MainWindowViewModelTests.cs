@@ -32,7 +32,7 @@ namespace Pos.Wpf.UnitTests
         }
 
         [TestMethod]
-        public void BarcodeScanned_ProductWithoutVatExist_PriceFormattedAndVatNotApplied()
+        public void BarcodeScanned_ProductWithout_PriceFormatted()
         {
             Product product = new Product { Price = 14.131m, Barcode = "some barcode"};
             IRepository repository = GetRepositoryDouble(product);
@@ -43,21 +43,13 @@ namespace Pos.Wpf.UnitTests
             Assert.AreEqual("14.13 $", vm.ProductPrice);
         }
 
-        [TestMethod]
-        public void BarcodeScanned_ProductWithVatExist_PriceFormattedAndVatApplied()
-        {
-            Product product = new Product { Price = 10m, HasVat = true, Barcode = "some barcode" };
-            IRepository repository = GetRepositoryDouble(product);
-            MainWindowViewModel vm = GetTarget(repository);
-
-            scannerStub.Scan("some barcode");
-
-            Assert.AreEqual("11.90 $", vm.ProductPrice);
-        }
-
         private MainWindowViewModel GetTarget(IRepository repository)
         {
-            return new MainWindowViewModel(scannerStub, repository);
+            var priceCalculatorStub = new Mock<IPriceCalculator>();
+            priceCalculatorStub.Setup(p => p.GetPrice(It.IsAny<Product>()))
+                .Returns<Product>(p => p.Price);
+
+            return new MainWindowViewModel(scannerStub, repository, priceCalculatorStub.Object);
         }
 
         private class ScannerDouble : IScanner

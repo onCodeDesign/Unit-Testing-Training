@@ -13,6 +13,13 @@ namespace Pos.Wpf.DAL
         public string CatalogCode { get; set; }
         public string CatalogName { get; set; }
         public decimal Price { get; set; }
-        public bool HasVat { get; set; }
+        public TaxationType[] Taxes { get; set; }
+    }
+
+    public enum TaxationType
+    {
+        Vat,
+        RegionalTax,
+        LuxuryTax
     }
 }

@@ -8,13 +8,16 @@ namespace Pos.Wpf
 {
     public class MainWindowViewModel : INotifyPropertyChanged
     {
+        private readonly IPriceCalculator priceCalculator;
         private readonly IScanner scanner;
         private readonly IRepository repository;
 
-        public MainWindowViewModel(IScanner scanner, IRepository repository)
+
+        public MainWindowViewModel(IScanner scanner, IRepository repository, IPriceCalculator priceCalculator)
         {
             this.scanner = scanner;
             this.repository = repository;
+            this.priceCalculator = priceCalculator;
             this.scanner.BarcodeScanned += ScannerBarcodeScanned;
         }
 
@@ -23,10 +26,7 @@ namespace Pos.Wpf
             Product product = repository.GetEntities<Product>().FirstOrDefault(p => p.Barcode == e.Barcode);
             if (product != null)
             {
-                var price = product.Price;
-                if (product.HasVat)
-                    price *= 1.19m;
-
+                decimal price = priceCalculator.GetPrice(product);
                 ProductCode = product.CatalogCode;
                 ProductPrice = $"{price:F2} $";
             }
@@ -38,6 +38,7 @@ namespace Pos.Wpf
         }
 
         private string productCode;
+
         public string ProductCode
         {
             get { return productCode; }
@@ -49,6 +50,7 @@ namespace Pos.Wpf
         }
 
         private string productName;
+
         public string ProductName
         {
             get { return productName; }
@@ -60,6 +62,7 @@ namespace Pos.Wpf
         }
 
         private string productPrice;
+
         public string ProductPrice
         {
             get { return productPrice; }
