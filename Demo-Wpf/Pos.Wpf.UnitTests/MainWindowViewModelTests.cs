@@ -32,7 +32,7 @@ namespace Pos.Wpf.UnitTests
         }
 
         [TestMethod]
-        public void BarcodeScanned_ProductExist_PriceFormatted()
+        public void BarcodeScanned_ProductWithoutVatExist_PriceFormattedAndVatNotApplied()
         {
             Product product = new Product { Price = 14.131m, Barcode = "some barcode"};
             IRepository repository = GetRepositoryDouble(product);
@@ -41,6 +41,18 @@ namespace Pos.Wpf.UnitTests
             scannerStub.Scan("some barcode");
 
             Assert.AreEqual("14.13 $", vm.ProductPrice);
+        }
+
+        [TestMethod]
+        public void BarcodeScanned_ProductWithVatExist_PriceFormattedAndVatApplied()
+        {
+            Product product = new Product { Price = 10m, HasVat = true, Barcode = "some barcode" };
+            IRepository repository = GetRepositoryDouble(product);
+            MainWindowViewModel vm = GetTarget(repository);
+
+            scannerStub.Scan("some barcode");
+
+            Assert.AreEqual("11.90 $", vm.ProductPrice);
         }
 
         private MainWindowViewModel GetTarget(IRepository repository)

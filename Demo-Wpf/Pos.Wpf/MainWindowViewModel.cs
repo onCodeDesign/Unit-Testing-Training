@@ -23,8 +23,12 @@ namespace Pos.Wpf
             Product product = repository.GetEntities<Product>().FirstOrDefault(p => p.Barcode == e.Barcode);
             if (product != null)
             {
+                var price = product.Price;
+                if (product.HasVat)
+                    price *= 1.19m;
+
                 ProductCode = product.CatalogCode;
-                ProductPrice = $"{product.Price:F2} $";
+                ProductPrice = $"{price:F2} $";
             }
 
             else

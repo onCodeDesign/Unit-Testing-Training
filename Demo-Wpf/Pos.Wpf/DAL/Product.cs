@@ -13,5 +13,6 @@ namespace Pos.Wpf.DAL
         public string CatalogCode { get; set; }
         public string CatalogName { get; set; }
         public decimal Price { get; set; }
+        public bool HasVat { get; set; }
     }
 }
