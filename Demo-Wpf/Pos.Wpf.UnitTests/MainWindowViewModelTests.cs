@@ -9,13 +9,21 @@ namespace Pos.Wpf.UnitTests
     [TestClass]
     public class MainWindowViewModelTests
     {
+        private ScannerDouble scannerStub;
+
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            scannerStub = new ScannerDouble();
+        }
+
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
             Product product = new Product { CatalogCode = "product code", Barcode = "some barcode" };
-            RepositoryDouble repository = new RepositoryDouble(product);
-            ScannerDouble scannerStub = new ScannerDouble();
-            MainWindowViewModel vm = new MainWindowViewModel(scannerStub, repository);
+            IRepository repositoryStub = GetRepositoryDouble(product);
+            MainWindowViewModel vm = GetTarget(repositoryStub);
 
             scannerStub.Scan("some barcode");
 
@@ -26,16 +34,18 @@ namespace Pos.Wpf.UnitTests
         public void BarcodeScanned_ProductExist_PriceFormatted()
         {
             Product product = new Product { Barcode = "some barcode", Price = 14.131m };
+            IRepository repository = GetRepositoryDouble(product);
+            MainWindowViewModel vm = GetTarget(repository);
 
-            ScannerDouble scanner = new ScannerDouble();
-            RepositoryDouble repository = new RepositoryDouble(product);
-            MainWindowViewModel vm = new MainWindowViewModel(scanner, repository);
-
-            scanner.Scan("some barcode");
+            scannerStub.Scan("some barcode");
 
             Assert.AreEqual("14.13 $", vm.ProductPrice);
         }
 
+        private MainWindowViewModel GetTarget(IRepository repository)
+        {
+            return new MainWindowViewModel(scannerStub, repository);
+        }
 
         private class ScannerDouble : IScanner
         {
@@ -45,6 +55,11 @@ namespace Pos.Wpf.UnitTests
             {
                 BarcodeScanned?.Invoke(this, new BarcodeScannedEventArgs(barcode));
             }
+        }
+
+        private static IRepository GetRepositoryDouble(Product product)
+        {
+            return new RepositoryDouble(product);
         }
 
         public class RepositoryDouble : IRepository
