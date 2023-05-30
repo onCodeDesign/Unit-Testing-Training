@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Pos.Wpf.DAL;
 using Pos.Wpf.Services;
 
@@ -21,7 +22,7 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExists_ProductCodeDisplayed()
         {
-            Product product = new Product { CatalogCode = "product code", Barcode = "some barcode" };
+            Product product = new Product { CatalogCode = "product code", Barcode = "some barcode"};
             IRepository repositoryStub = GetRepositoryDouble(product);
             MainWindowViewModel vm = GetTarget(repositoryStub);
 
@@ -33,7 +34,7 @@ namespace Pos.Wpf.UnitTests
         [TestMethod]
         public void BarcodeScanned_ProductExist_PriceFormatted()
         {
-            Product product = new Product { Barcode = "some barcode", Price = 14.131m };
+            Product product = new Product { Price = 14.131m, Barcode = "some barcode"};
             IRepository repository = GetRepositoryDouble(product);
             MainWindowViewModel vm = GetTarget(repository);
 
@@ -59,7 +60,10 @@ namespace Pos.Wpf.UnitTests
 
         private static IRepository GetRepositoryDouble(Product product)
         {
-            return new RepositoryDouble(product);
+            var repoStub = new Mock<IRepository>();
+            repoStub.Setup(x => x.GetEntities<Product>())
+                .Returns(new[] {product}.AsQueryable());
+            return repoStub.Object;
         }
 
         public class RepositoryDouble : IRepository
